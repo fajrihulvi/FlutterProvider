@@ -208,9 +208,9 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                   children: <Widget>[
                     RaisedButton(
                       color: primaryColor2,
-                      onPressed: (){
+                      onPressed: () async{
                         if(this.formArus.currentState.validate()){
-                          print("Sukses arus");
+                          
                         }
                       },
                       child: Text('Selanjutnya'),

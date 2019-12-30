@@ -3,19 +3,23 @@ class StandMeter {
   String _lwbp;
   String _wbp;
   String _kvarh;
+  int _baID;
   int get id=>_id;
-  String get noIMEI =>_lwbp;
-  String get tipe => _wbp;
-  String get merk => _kvarh;
+  String get lwbp =>_lwbp;
+  String get wbp => _wbp;
+  String get kvarh => _kvarh;
+  int get baID=>_baID;
   StandMeter.initial()
   : _id = 0,
     _lwbp = "",
     _wbp ="",
-    _kvarh ="";
+    _kvarh ="",
+    _baID = 0;
   StandMeter.fromMap(Map<String,dynamic> obj){
     _id = int.parse(obj['id']);
-    _lwbp = obj['lwbp'];
-    _wbp = obj['wbp'];
-    _kvarh = obj['kvarh'];
+    _lwbp = obj['nilai_lwbp'];
+    _wbp = obj['nilai_wbp'];
+    _kvarh = obj['nilai_kvarh'];
+    _baID = int.parse(obj['hasil_pemeriksaan_id']);
   }
 }

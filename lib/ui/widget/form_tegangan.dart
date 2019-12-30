@@ -1,18 +1,18 @@
+import 'package:amr_apps/core/model/Tegangan.dart';
 import 'package:flutter/material.dart';
-import 'package:amr_apps/core/model/Arus.dart';
 
-class FormArus extends StatelessWidget {
-  final TextEditingController lr;
-  final TextEditingController ls;
-  final TextEditingController lt;
+class FormTegangan extends StatelessWidget {
+  final TextEditingController vr;
+  final TextEditingController vs;
+  final TextEditingController vt;
   final int pemeriksaanID;
-  final Arus arus;
-  FormArus({this.lr,this.ls,this.lt,this.pemeriksaanID,this.arus});
+  final Tegangan tegangan;
+  FormTegangan({this.vr,this.vs,this.vt,this.pemeriksaanID,this.tegangan});
   @override
   Widget build(BuildContext context) {
-    TextEditingController _lr = new TextEditingController(text:this.arus.lr);
-    TextEditingController _ls = new TextEditingController(text:this.arus.ls);
-    TextEditingController _lt = new TextEditingController(text:this.arus.lt);
+    TextEditingController _vr = new TextEditingController(text:this.tegangan.vr);
+    TextEditingController _vs = new TextEditingController(text:this.tegangan.vs);
+    TextEditingController _vt = new TextEditingController(text:this.tegangan.vt);
     return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -20,14 +20,14 @@ class FormArus extends StatelessWidget {
                       children: <Widget>[
                         TextFormField(
                           enabled: true,
-                          controller: _lr,
+                          controller: _vr,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
                               return 'data lr masih kosong';
                             }
                             
-                            this.lr.text = value;
+                            this.vr.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
@@ -35,7 +35,7 @@ class FormArus extends StatelessWidget {
                           ),
                         ),
                         TextFormField(
-                          controller: _ls,
+                          controller: _vs,
                           enabled: true,
                           keyboardType: TextInputType.text,
                           validator: (value){
@@ -43,7 +43,7 @@ class FormArus extends StatelessWidget {
                               return 'data ls masih kosong';
                             }
                             
-                            this.ls.text = value;
+                            this.vs.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
@@ -52,13 +52,13 @@ class FormArus extends StatelessWidget {
                         ),
                         TextFormField(
                           enabled: true,
-                          controller: _lt,
+                          controller: _vt,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
                               return 'data lt masih kosong';
                             }
-                            this.lt.text = value;
+                            this.vt.text = value;
                             return null;
                           },
                           decoration: InputDecoration(

@@ -1,17 +1,16 @@
 import 'dart:convert';
-
-import 'package:amr_apps/core/model/Arus.dart';
+import 'package:amr_apps/core/model/Tegangan.dart';
 import 'package:http/http.dart' as http;
 
-class ArusApi {
+class TeganganApi {
   static const host = "http://192.168.43.85";
   static const postfix = "/amr";
   var client = new http.Client();
-  Future<Arus> getArusByBA(String token,String hasilPemeriksaanID) async{
-    print("Get Arus By BA....");
+  Future<Tegangan> getTeganganByBA(String token,String hasilPemeriksaanID) async{
+    print("Get Tegangan By BA....");
     print("Token : $token");
-    Arus arus;
-    var url = Uri.parse(host+postfix+"/arus?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
+    Tegangan tegangan;
+    var url = Uri.parse(host+postfix+"/tegangan?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -23,22 +22,22 @@ class ArusApi {
     print('body: [${response.body}]');
     if(statusCode < 200 || statusCode >= 400){
       print("An Error Occured : [Status Code : $statusCode]");
-      arus = new Arus.initial();
-      return arus;
+      tegangan = new Tegangan.initial();
+      return tegangan;
     }
     var responseBody =  json.decode(response.body);
-    if(responseBody['arus'] == null){
-      arus = new Arus.initial();
-      return arus;
+    if(responseBody['tegangan']==null){
+      tegangan = new Tegangan.initial();
+      return tegangan;
     }
-    arus = new Arus.fromMap(responseBody['arus']);
-    return arus;
+    tegangan = new Tegangan.fromMap(responseBody);
+    return tegangan;
   }
-  Future<Map<String,dynamic>> insertArus(String token,Map<String,dynamic> data) async{
-    print("Insert data arus....");
+  Future<Map<String,dynamic>> insertTegangan(String token,Map<String,dynamic> data) async{
+    print("Insert data tegangan....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/arus");
+    var url = Uri.parse(host+postfix+"/tegangan");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

@@ -1,17 +1,16 @@
 import 'dart:convert';
-
-import 'package:amr_apps/core/model/Arus.dart';
+import 'package:amr_apps/core/model/StandMeter.dart';
 import 'package:http/http.dart' as http;
 
-class ArusApi {
+class StandMeterApi {
   static const host = "http://192.168.43.85";
   static const postfix = "/amr";
   var client = new http.Client();
-  Future<Arus> getArusByBA(String token,String hasilPemeriksaanID) async{
-    print("Get Arus By BA....");
+  Future<StandMeter> getStandMeterByBA(String token,String hasilPemeriksaanID) async{
+    print("Get StandMeter By BA....");
     print("Token : $token");
-    Arus arus;
-    var url = Uri.parse(host+postfix+"/arus?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
+    StandMeter stand_meter;
+    var url = Uri.parse(host+postfix+"/stand_meter?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -23,22 +22,22 @@ class ArusApi {
     print('body: [${response.body}]');
     if(statusCode < 200 || statusCode >= 400){
       print("An Error Occured : [Status Code : $statusCode]");
-      arus = new Arus.initial();
-      return arus;
+      stand_meter = new StandMeter.initial();
+      return stand_meter;
     }
     var responseBody =  json.decode(response.body);
-    if(responseBody['arus'] == null){
-      arus = new Arus.initial();
-      return arus;
+    if(responseBody['stand_meter']==null){
+      stand_meter = new StandMeter.initial();
+      return stand_meter;
     }
-    arus = new Arus.fromMap(responseBody['arus']);
-    return arus;
+    stand_meter = new StandMeter.fromMap(responseBody);
+    return stand_meter;
   }
-  Future<Map<String,dynamic>> insertArus(String token,Map<String,dynamic> data) async{
-    print("Insert data arus....");
+  Future<Map<String,dynamic>> insertStandMeter(String token,Map<String,dynamic> data) async{
+    print("Insert data stand_meter....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/arus");
+    var url = Uri.parse(host+postfix+"/stand_meter");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

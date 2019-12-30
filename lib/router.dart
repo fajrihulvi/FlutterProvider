@@ -4,6 +4,7 @@ import 'package:amr_apps/ui/login_screen.dart';
 import 'package:amr_apps/ui/pemeriksaan_pelanggan_pertama.dart';
 import 'package:flutter/material.dart';
 
+import 'core/model/Berita_Acara.dart';
 import 'core/model/WorkOrder.dart';
 
 class Router{
@@ -18,7 +19,8 @@ class Router{
         var wo = settings.arguments as WorkOrder;
         return MaterialPageRoute(builder: (_)=>DetailWoPemeriksaanScreen(workOrder:wo));
       case '/detail_pemeriksaan/first':
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen());
+        var ba = settings.arguments as Berita_Acara;
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id,));
       default :
         return MaterialPageRoute(builder: (_)=>Scaffold(
           body: Center(child: Text("No route defined for ${settings.name}")),
