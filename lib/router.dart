@@ -2,8 +2,10 @@ import 'package:amr_apps/ui/detail_wo_pemasangan_screen.dart';
 import 'package:amr_apps/ui/detail_wo_pemeriksaan_screen.dart';
 import 'package:amr_apps/ui/home_screen.dart';
 import 'package:amr_apps/ui/login_screen.dart';
+import 'package:amr_apps/ui/pemasangan_pelanggan_kedua.dart';
 import 'package:amr_apps/ui/pemasangan_pelanggan_pertama.dart';
 import 'package:amr_apps/ui/pemeriksaan_pelanggan_kedua.dart';
+import 'package:amr_apps/ui/pemeriksaan_pelanggan_ketiga_screen.dart';
 import 'package:amr_apps/ui/pemeriksaan_pelanggan_pertama.dart';
 import 'package:flutter/material.dart';
 
@@ -32,11 +34,19 @@ class Router{
           pemeriksaanID: ba.id,
           pelangganID: ba.pelangganID,
         ));
+      case '/detail_pemasangan/second':
+        return MaterialPageRoute(builder: (_)=>PemasanganPelangganKeduaScreen());
       case '/detail_pemeriksaan/first':
         var ba = settings.arguments as Berita_Acara;
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id, pelangganID: ba.pelangganID));
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba));
       case '/detail_pemeriksaan/second':
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen());
+        var ba = settings.arguments as Berita_Acara;
+        print(ba);
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(baID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba));
+      case '/detail_pemeriksaan/third':
+        var ba = settings.arguments as Berita_Acara;
+        print(ba);
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKetigaScreen(beritaAcara: ba));
       default :
         return MaterialPageRoute(builder: (_)=>Scaffold(
           body: Center(child: Text("No route defined for ${settings.name}")),

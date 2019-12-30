@@ -1,3 +1,4 @@
+import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_pelanggan_view.dart';
@@ -6,6 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PemeriksaanPelangganKetigaScreen extends StatefulWidget {
+  final Berita_Acara beritaAcara;
+
+  const PemeriksaanPelangganKetigaScreen({Key key, this.beritaAcara}) : super(key: key);
+  
   @override
   _PemeriksaanPelangganKetigaScreenState createState() => _PemeriksaanPelangganKetigaScreenState();
 }

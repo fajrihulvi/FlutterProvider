@@ -2,8 +2,6 @@ import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:flutter/material.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 
-import '../pemeriksaan_pelanggan_pertama.dart';
-
 class PemeriksaanCard extends StatelessWidget {
   final Berita_Acara beritaAcara;
   final Function onTap;

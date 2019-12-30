@@ -250,7 +250,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                                     seconds: 3,
                                   ),(){
                                     Navigator.pushNamed(
-                                context, '/detail_pemassangan/second');
+                                context, '/detail_pemasangan/second',arguments: widget);
                                   }
                                 );
                             }

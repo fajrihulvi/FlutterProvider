@@ -1,26 +1,35 @@
+import 'dart:async';
+
+import 'package:amr_apps/core/enum/viewstate.dart';
+import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
+import 'package:amr_apps/core/model/TindakLanjut.dart';
+import 'package:amr_apps/core/model/User.dart';
+import 'package:amr_apps/core/viewmodel/pemeriksaan_kedua.model.dart';
+import 'package:amr_apps/ui/base_view.dart';
 import 'package:amr_apps/ui/pemeriksaan_pelanggan_ketiga_screen.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
+import 'package:amr_apps/ui/widget/HasilPemeriksaanTile.dart';
+import 'package:amr_apps/ui/widget/TindakLanjutTile.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class PemeriksaanPelangganKeduaScreen extends StatefulWidget {
+  final int pelangganID;
+  final int baID;
+  final Berita_Acara beritaAcara;
+
+  const PemeriksaanPelangganKeduaScreen({this.pelangganID, this.baID,this.beritaAcara});
+  
   @override
   _PemeriksaanPelangganKeduaScreenState createState() => _PemeriksaanPelangganKeduaScreenState();
 }
 
 class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKeduaScreen> {
-
-  bool _isChecked = false;
-  bool _isChecked2 = false;
-  bool _isChecked3 = false;
-  bool _isChecked4 = false;
-  bool _isChecked5 = false;
-  bool _isChecked6 = false;
-  bool _isChecked7 = false;
-  bool _isChecked8 = false;
   bool _isChecked9 = false;
   bool _isChecked10 = false;
   bool _isChecked11 = false;
@@ -29,10 +38,14 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
   bool _isChecked14 = false;
   bool _isChecked15= false;
   bool _isChecked16 = false;
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseView<PemeriksaanKeduaModel>(
+    onModelReady : (model)=>model.getPemeliharaan(Provider.of<User>(context).token),
+    builder : (context,model,child)=>Scaffold(
+      key: _scaffoldKey,
       backgroundColor: cBgColor,
       appBar: PreferredSize(
         preferredSize:
@@ -76,7 +89,9 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
               ),
             )),
       ),
-      body: SingleChildScrollView(
+      body: model.state == ViewState.Busy ?
+      Center(child: CircularProgressIndicator()) :
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -86,81 +101,7 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
               Card(
                 child:
                 Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('Modem Normal'),
-                      trailing: Checkbox(
-                          value: _isChecked, onChanged: (bool x){
-                        setState(() {
-                          _isChecked = !_isChecked;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Modem Error / Hang'),
-                      trailing: Checkbox(
-                          value: _isChecked2, onChanged: (bool x){
-                        setState(() {
-                          _isChecked2 = !_isChecked2;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Modem Rusak'),
-                      trailing: Checkbox(
-                          value: _isChecked3, onChanged: (bool x){
-                        setState(() {
-                          _isChecked3 = !_isChecked3;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Power Supply Modem Rusak'),
-                      trailing: Checkbox(
-                          value: _isChecked4, onChanged: (bool x){
-                        setState(() {
-                          _isChecked4 = !_isChecked4;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Kabel Data Rusak / Putus'),
-                      trailing: Checkbox(
-                          value: _isChecked5, onChanged: (bool x){
-                        setState(() {
-                          _isChecked5 = !_isChecked5;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('No. SIM Card Rusak / Terblokir'),
-                      trailing: Checkbox(
-                          value: _isChecked6, onChanged: (bool x){
-                        setState(() {
-                          _isChecked6 = !_isChecked6;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Antena Rusak / Hilang'),
-                      trailing: Checkbox(
-                          value: _isChecked7, onChanged: (bool x){
-                        setState(() {
-                          _isChecked7 = !_isChecked7;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Blank Spot / Tidak Ada Sinyal Komunikasi'),
-                      trailing: Checkbox(
-                          value: _isChecked8, onChanged: (bool x){
-                        setState(() {
-                          _isChecked8 = !_isChecked8;
-                        });
-                      }),
-                    ),
-
-                  ],
+                  children: this.getTileHasilPemeriksaan(model.hasilPemeriksaan),
                 ),
               ),
               SizedBox(
@@ -170,88 +111,7 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
               Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('Restart Modem'),
-                      trailing: Checkbox(
-                          value: _isChecked9, onChanged: (bool x){
-                        setState(() {
-                          _isChecked9 = !_isChecked9;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Ganti Power Supply'),
-                      trailing: Checkbox(
-                          value: _isChecked10, onChanged: (bool x){
-                        setState(() {
-                          _isChecked10 = !_isChecked10;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Row(
-                        children: <Widget>[
-                          Text('Ganti Modem'),
-                          Column(
-                            children: <Widget>[
-                            ],
-                          )
-                        ],
-                      ),
-                      trailing: Checkbox(
-                          value: _isChecked11, onChanged: (bool x){
-                        setState(() {
-                          _isChecked11 = !_isChecked11;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Ganti Kabel Data'),
-                      trailing: Checkbox(
-                          value: _isChecked12, onChanged: (bool x){
-                        setState(() {
-                          _isChecked12 = !_isChecked12;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Ganti Antena'),
-                      trailing: Checkbox(
-                          value: _isChecked13, onChanged: (bool x){
-                        setState(() {
-                          _isChecked13 = !_isChecked13;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Ganti Konektor RJ45'),
-                      trailing: Checkbox(
-                          value: _isChecked14, onChanged: (bool x){
-                        setState(() {
-                          _isChecked14 = !_isChecked14;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Ganti No SIM Card'),
-                      trailing: Checkbox(
-                          value: _isChecked15, onChanged: (bool x){
-                        setState(() {
-                          _isChecked15 = !_isChecked15;
-                        });
-                      }),
-                    ),
-                    ListTile(
-                      title: Text('Lainnya'),
-                      trailing: Checkbox(
-                          value: _isChecked16, onChanged: (bool x){
-                        setState(() {
-                          _isChecked16 = !_isChecked16;
-                        });
-                      }),
-                    ),
-                  ],
+                  children: this.getTindakLanjut(model.tindakLanjut)
                 ),
               ),
               Row(
@@ -259,8 +119,46 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
                 children: <Widget>[
                   RaisedButton(
                     color: primaryColor2,
-                    onPressed: (){
-                      Navigator.push(context, CupertinoPageRoute(builder: (context)=>PemeriksaanPelangganKetigaScreen()));
+                    onPressed: () async{
+                      var tindakLanjutId = new List();
+                      var tindakLanjutCheck = new List();
+                      for(var a in model.tindakLanjut){
+                        tindakLanjutId.add(a.id);
+                        tindakLanjutCheck.add(a.check);
+                      }
+                      var hasilPemeriksaanId = List();
+                      var hasilPemeriksaanCheck = List();
+                      for(var a in model.hasilPemeriksaan){
+                        hasilPemeriksaanId.add(a.id);
+                        hasilPemeriksaanCheck.add(a.check);
+                      }
+                      var result = await model.insert(Provider.of<User>(context).token ,this.widget.baID, hasilPemeriksaanId,hasilPemeriksaanCheck,tindakLanjutId,tindakLanjutCheck
+                      );
+                      if(result['success']==true){
+                        print(result['msg']);
+                        _scaffoldKey.currentState.showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.green,
+                                  duration: Duration(
+                                  seconds: 1
+                                ),
+                                  content: Text(result['msg']))
+                                );
+                                Timer(
+                                  Duration(
+                                    seconds: 3,
+                                  ),(){
+                                    Navigator.pushNamed(
+                                context, '/detail_pemeriksaan/third',arguments: widget.beritaAcara);
+                                  }
+                                );
+                      }
+                      else{
+                         _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 1),
+                                content: Text(result['msg'])));
+                      }
                     },
                     child: Text('Selanjutnya'),
 
@@ -271,6 +169,53 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
           ),
         ),
       ),
-    );
+    )
+  );
+  }
+  List<Widget> getTileHasilPemeriksaan(List<HasilPemeriksaan> hasilPemeriksaan){
+    var items = new List<Widget>();
+      for (var hp in hasilPemeriksaan) {
+        items.add(new HasilPemeriksaanTile(
+            hasilPemeriksaan: hp,
+            isChecked: hp.check == null || hp.check == 0 ? false : true,
+            onTap: (bool isCheck){
+              if(isCheck == true){
+                setState(() {
+                  hp.check = 1;
+                });
+              }
+              else{
+                setState(() {
+                  hp.check = 0;
+                });
+              }
+            }
+          )
+        );
+      }
+    return items;
+  }
+  List<Widget> getTindakLanjut(List<TindakLanjut> tindakLanjut){
+    var items = new List<Widget>();
+      for (var tl in tindakLanjut) {
+        items.add(new TindakLanjutTile(
+            tindakLanjut: tl,
+            isChecked: tl.check == null || tl.check == 0 ? false : true,
+            onTap: (bool isCheck){
+              if(isCheck == true){
+                setState(() {
+                  tl.check = 1;
+                });
+              }
+              else{
+                setState(() {
+                  tl.check = 0;
+                });
+              }
+            }
+          )
+        );
+      }
+    return items;
   }
 }

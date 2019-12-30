@@ -1,10 +1,13 @@
 import 'package:amr_apps/core/service/ArusApi.dart';
+import 'package:amr_apps/core/service/HasilPemeriksaanApi.dart';
 import 'package:amr_apps/core/service/MeterApi.dart';
 import 'package:amr_apps/core/service/ModemApi.dart';
 import 'package:amr_apps/core/service/SimCardApi.dart';
+import 'package:amr_apps/core/service/TindakLanjutApi.dart';
 import 'package:amr_apps/core/viewmodel/detail_pemasangan_model.dart';
 import 'package:amr_apps/core/viewmodel/meter_model.dart';
 import 'package:amr_apps/core/viewmodel/modem_model.dart';
+import 'package:amr_apps/core/viewmodel/pemeriksaan_kedua.model.dart';
 import 'package:amr_apps/core/viewmodel/sim_card_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:amr_apps/core/service/api.dart';
@@ -29,6 +32,8 @@ void setupLocator() {
  locator.registerLazySingleton(() => SimCardApi());
  locator.registerLazySingleton(() => ModemApi());
  locator.registerLazySingleton(() => MeterApi());
+ locator.registerLazySingleton(() => HasilPemeriksaanApi());
+ locator.registerLazySingleton(() => TindakLanjutApi());
  locator.registerLazySingleton(()=>AuthService());
  locator.registerLazySingleton(()=>LoginModel());
  locator.registerFactory(()=>HomeModel());
@@ -42,4 +47,5 @@ void setupLocator() {
  locator.registerFactory(()=>SimCardModel());
  locator.registerFactory(()=>ModemModel());
  locator.registerFactory(()=>MeterModel());
+ locator.registerFactory(()=>PemeriksaanKeduaModel());
 }

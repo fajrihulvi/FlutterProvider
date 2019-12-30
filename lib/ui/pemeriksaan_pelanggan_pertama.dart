@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:amr_apps/core/enum/viewstate.dart';
+import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/arus_model.dart';
 import 'package:amr_apps/core/viewmodel/meter_model.dart';
@@ -24,8 +25,9 @@ import 'package:provider/provider.dart';
 class PemeriksaanPelangganPertamaScreen extends StatefulWidget {
   final int pemeriksaanID;
   final int pelangganID;
+  final Berita_Acara beritaAcara;
 
-  const PemeriksaanPelangganPertamaScreen({this.pemeriksaanID,this.pelangganID});
+  const PemeriksaanPelangganPertamaScreen({this.pemeriksaanID,this.pelangganID,this.beritaAcara});
   
   @override
   _PemeriksaanPelangganPertamaScreenState createState() => _PemeriksaanPelangganPertamaScreenState();
@@ -251,7 +253,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                                     seconds: 3,
                                   ),(){
                                     Navigator.pushNamed(
-                                context, '/detail_pemeriksaan/second');
+                                context, '/detail_pemeriksaan/second',arguments: this.widget.beritaAcara);
                                   }
                                 );
                             }
