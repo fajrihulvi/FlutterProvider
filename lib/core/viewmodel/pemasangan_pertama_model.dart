@@ -12,7 +12,7 @@ import 'package:amr_apps/core/viewmodel/base_model.dart';
 
 import '../../locator.dart';
 
-class PemeriksaanPertamaModel extends BaseModel{
+class PemasanganPertamaModel extends BaseModel{
   ArusApi _api = locator<ArusApi>();
   TeganganApi _apiTegangan = locator<TeganganApi>();
   StandMeterApi _apiStandMeter = locator<StandMeterApi>();

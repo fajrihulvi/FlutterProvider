@@ -26,7 +26,6 @@ class FormArus extends StatelessWidget {
                             if(value.isEmpty){
                               return 'data lr masih kosong';
                             }
-                            
                             this.lr.text = value;
                             return null;
                           },

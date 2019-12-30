@@ -158,6 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if(wo.jenisPemeliharaan.contains("Pemeliharaan")){
         items.add(new WoCard(
           workOrder: wo,
+          title: "WO Pemeriksaan",
           onTap: (){
             print(wo.nomorWO);
             Navigator.pushNamed(context, '/detail_pemeriksaan',arguments: wo);
@@ -173,6 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if(wo.jenisPemeliharaan.contains("Pasang Baru")){
         items.add(new WoCard(
           workOrder: wo,
+          title: "WO Pemasangan Baru",
           onTap: (){
             Navigator.pushNamed(context, '/detail_pemasangan',arguments: wo);
           },

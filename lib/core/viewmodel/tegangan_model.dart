@@ -8,7 +8,7 @@ import '../../locator.dart';
 class TeganganModel extends BaseModel{
   TeganganApi _api = locator<TeganganApi>();
   Tegangan tegangan;
-  Future getTeganganByBA(String token, String pemeriksaanID)async{
+  Future getTeganganByBA(String token, String pemeriksaanID) async{
     setState(ViewState.Busy);
     tegangan = await _api.getTeganganByBA(token, pemeriksaanID);
     setState(ViewState.Idle);

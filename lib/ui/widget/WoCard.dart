@@ -7,7 +7,8 @@ import 'package:amr_apps/ui/shared/color.dart';
 class WoCard extends StatelessWidget {
   final WorkOrder workOrder;
   final Function onTap;
-  const WoCard({this.workOrder,this.onTap});
+  final String title;
+  const WoCard({this.workOrder,this.onTap,this.title});
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -28,7 +29,7 @@ class WoCard extends StatelessWidget {
                                         style: TextStyle(color: textColor, fontSize: 16),
                                       ),
                                       ListTile(
-                                        title: AutoSizeText('WO Pemasangan Baru '),
+                                        title: AutoSizeText(this.title),
                                         subtitle: AutoSizeText(workOrder.nomorWO),
                                       ),
                                     ],

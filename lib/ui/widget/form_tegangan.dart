@@ -24,14 +24,14 @@ class FormTegangan extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
-                              return 'data lr masih kosong';
+                              return 'data vr masih kosong';
                             }
                             
                             this.vr.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
-                            labelText: 'Ir',
+                            labelText: 'vr',
                           ),
                         ),
                         TextFormField(
@@ -40,14 +40,14 @@ class FormTegangan extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
-                              return 'data ls masih kosong';
+                              return 'data vs masih kosong';
                             }
                             
                             this.vs.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
-                            labelText: 'Is',
+                            labelText: 'vs',
                           ),
                         ),
                         TextFormField(
@@ -56,13 +56,13 @@ class FormTegangan extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
-                              return 'data lt masih kosong';
+                              return 'data vt masih kosong';
                             }
                             this.vt.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
-                            labelText: 'It',
+                            labelText: 'vt',
                           ),
                         ),
                       ],

@@ -30,7 +30,7 @@ class TeganganApi {
       tegangan = new Tegangan.initial();
       return tegangan;
     }
-    tegangan = new Tegangan.fromMap(responseBody);
+    tegangan = new Tegangan.fromMap(responseBody['tegangan']);
     return tegangan;
   }
   Future<Map<String,dynamic>> insertTegangan(String token,Map<String,dynamic> data) async{

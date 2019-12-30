@@ -4,7 +4,13 @@ class SimCard {
   String _brand;
   int get id=>_id;
   String get noSIM =>_noSIM;
-  String get merk => _brand;
+  String get brand => _brand;
+  set noSIM(String string){
+    this._noSIM = string;
+  }
+  set brand(String string){
+    this._brand = string;
+  }
   SimCard.initial()
   : _id = 0,
     _noSIM = "",

@@ -7,6 +7,16 @@ class Modem {
   String get noIMEI =>_noIMEI;
   String get tipe => _tipe;
   String get merk => _merk;
+  
+  set noIMEI(String noimei){
+    this._noIMEI = noimei;
+  }
+  set tipe(String string){
+    this._tipe = string;
+  }
+  set merk(String string){
+    this._merk = string;
+  }
   Modem.initial()
   : _id = 0,
     _noIMEI = "",

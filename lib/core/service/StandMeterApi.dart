@@ -30,7 +30,7 @@ class StandMeterApi {
       stand_meter = new StandMeter.initial();
       return stand_meter;
     }
-    stand_meter = new StandMeter.fromMap(responseBody);
+    stand_meter = new StandMeter.fromMap(responseBody['stand_meter']);
     return stand_meter;
   }
   Future<Map<String,dynamic>> insertStandMeter(String token,Map<String,dynamic> data) async{

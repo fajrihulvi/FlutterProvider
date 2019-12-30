@@ -1,12 +1,20 @@
+import 'dart:async';
+
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/arus_model.dart';
+import 'package:amr_apps/core/viewmodel/meter_model.dart';
+import 'package:amr_apps/core/viewmodel/modem_model.dart';
 import 'package:amr_apps/core/viewmodel/pemeriksaan_pertama_model.dart';
+import 'package:amr_apps/core/viewmodel/stand_meter_model.dart';
 import 'package:amr_apps/core/viewmodel/tegangan_model.dart';
 import 'package:amr_apps/ui/base_view.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:amr_apps/ui/widget/form_arus.dart';
+import 'package:amr_apps/ui/widget/form_meter.dart';
+import 'package:amr_apps/ui/widget/form_modem.dart';
+import 'package:amr_apps/ui/widget/form_stand_meter.dart';
 import 'package:amr_apps/ui/widget/form_tegangan.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,8 +23,9 @@ import 'package:provider/provider.dart';
 
 class PemeriksaanPelangganPertamaScreen extends StatefulWidget {
   final int pemeriksaanID;
+  final int pelangganID;
 
-  const PemeriksaanPelangganPertamaScreen({this.pemeriksaanID});
+  const PemeriksaanPelangganPertamaScreen({this.pemeriksaanID,this.pelangganID});
   
   @override
   _PemeriksaanPelangganPertamaScreenState createState() => _PemeriksaanPelangganPertamaScreenState();
@@ -31,17 +40,26 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
   vs = TextEditingController(),
   lwbp = TextEditingController(),
   wbp = TextEditingController(),
-  kvarh = TextEditingController();
+  kvarh = TextEditingController(),
+  noImei= TextEditingController(),
+  tipeModem= TextEditingController(),
+  merkModem= TextEditingController(),
+  noSeri= TextEditingController(),
+  tipeMeter= TextEditingController(),
+  merkMeter= TextEditingController(),
+  noSim= TextEditingController();
   final formArus = GlobalKey<FormState>();
   final formTegangan = GlobalKey<FormState>();
   final formStandMeter = GlobalKey<FormState>();
   final formMeter = GlobalKey<FormState>();
   final formModem = GlobalKey<FormState>();
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return BaseView<PemeriksaanPertamaModel>(
     builder : (context, model,child)=>SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomPadding: true,
         backgroundColor: cBgColor,
         appBar: PreferredSize(
@@ -93,100 +111,58 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('Data App',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Merk Meter',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Type Meter',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'ID Meter',
-                          ),
-                        ),
-                      ],
+                BaseView<MeterModel>(
+                  onModelReady: (modelMeter)=>modelMeter.getMeterByPelanggan(Provider.of<User>(context).token, this.widget.pelangganID.toString()),
+                  builder: (context,modelMeter,child)=>modelMeter.state == ViewState.Busy ? 
+                  Center(child: CircularProgressIndicator()) :
+                  Form(
+                    key: this.formMeter,
+                    child: FormMeter(
+                      tipeMeter: this.tipeMeter,
+                      merkMeter: this.merkMeter,
+                      noSeri: this.noSeri,
+                      meter: modelMeter.meter
                     ),
-                  ),
+                  )
                 ),
                 SizedBox(height: 20,),
                 Text('Data Modem',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Merk Modem',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Type Modem',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'No. Imei ',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'No. SIM Card ',
-                          ),
-                        ),
-                      ],
+                BaseView<ModemModel>(
+                  onModelReady: (modelModem)=>modelModem.getDataModem(Provider.of<User>(context).token, this.widget.pelangganID.toString()),
+                  builder: (context,modelModem,child)=>modelModem.state == ViewState.Busy ? 
+                  Center(child: CircularProgressIndicator()) :
+                  Form(
+                    key: this.formModem,
+                    child: FormModem(
+                      tipeModem: this.tipeModem,
+                      merkModem: this.merkModem,
+                      noImei: this.noImei,
+                      noSimcard: this.noSim,
+                      modem: modelModem.modem,
+                      simCard: modelModem.simCard,
                     ),
-                  ),
+                  )
                 ),
                 SizedBox(height: 20,),
                 Text('Stand Meter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'LWBP',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'WBP',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'kVArH',
-                          ),
-                        ),
-                      ],
+                BaseView<StandMeterModel>(
+                  onModelReady: (modelStandMeter)=>modelStandMeter.getStandMeterByBA(Provider.of<User>(context).token, this.widget.pemeriksaanID.toString()),
+                  builder: (context,modelStandMeter,child)=> modelStandMeter.state == ViewState.Busy ?
+                  Center(child: CircularProgressIndicator()) : 
+                   Form(
+                    key: this.formStandMeter,
+                    child: FormStandMeter(
+                      lwbp: this.lwbp,
+                      wbp: this.wbp,
+                      kvarh: this.kvarh,
+                      pemeriksaanID: modelStandMeter.standMeter.baID,
+                      standMeter: modelStandMeter.standMeter,
                     ),
                   ),
                 ),
                 SizedBox(height: 20,),
                 Text('Tegangan (V)',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                 BaseView<TeganganModel>(
+                BaseView<TeganganModel>(
                   onModelReady: (modelTegangan)=>modelTegangan.getTeganganByBA(Provider.of<User>(context).token, this.widget.pemeriksaanID.toString()),
                   builder: (context,modelTegangan,child)=> modelTegangan.state == ViewState.Busy ?
                   Center(child: CircularProgressIndicator()) : 
@@ -224,14 +200,67 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                     RaisedButton(
                       color: primaryColor2,
                         onPressed: () async{
-                          if(this.formArus.currentState.validate()){
-                            Map<String,dynamic> resultArus = await model.insertArus(Provider.of<User>(context).token, {
+                          if(this.formTegangan.currentState.validate()&&this.formArus.currentState.validate()
+                          &&this.formStandMeter.currentState.validate()&&this.formModem.currentState.validate()
+                          &&this.formMeter.currentState.validate()){
+                            Map<String,dynamic> result = await model.insertAll(Provider.of<User>(context).token, {
+                              "nilai_vs" : this.vs.text,
+                              "nilai_vr" : this.vr.text,
+                              "nilai_vt" : this.vt.text,
+                              "hasil_pemeriksaan_id" : this.widget.pemeriksaanID.toString()
+                            },{
                               "nilai_ls" : this.ls.text,
                               "nilai_lr" : this.lr.text,
                               "nilai_lt" : this.lt.text,
                               "hasil_pemeriksaan_id" : this.widget.pemeriksaanID.toString()
-                            });
-                            print(resultArus['msg']);
+                            },{
+                              "nilai_lwbp" : this.lwbp.text,
+                              "nilai_wbp" : this.wbp.text,
+                              "nilai_kvarh" : this.kvarh.text,
+                              "hasil_pemeriksaan_id" : this.widget.pemeriksaanID.toString()
+                            },
+                            {
+                              "no_imei" : this.noImei.text,
+                              "tipe" : this.tipeModem.text,
+                              "merk" : this.merkModem.text,
+                              "pelanggan_id" : this.widget.pelangganID.toString()
+                            },
+                            {
+                              "no_sim" : this.noSim.text,
+                              "pelanggan_id" : this.widget.pelangganID.toString()
+                            },
+                            {
+                              "no_seri" : this.noSeri.text,
+                              "tipe" : this.tipeMeter.text,
+                              "merk" : this.merkMeter.text,
+                              "pelanggan_id" : this.widget.pelangganID.toString()
+                            },
+                            );
+                            if(result['success']==true){
+                              _scaffoldKey.currentState.showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.green,
+                                  duration: Duration(
+                                  seconds: 1
+                                ),
+                                  content: Text(result['msg']))
+                                  
+                                );
+                                Timer(
+                                  Duration(
+                                    seconds: 3,
+                                  ),(){
+                                    Navigator.pushNamed(
+                                context, '/detail_pemeriksaan/second');
+                                  }
+                                );
+                            }
+                            else{
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 1),
+                                content: Text(result['msg'])));
+                            }
                           }
                         },
                       child: Text('Selanjutnya'),

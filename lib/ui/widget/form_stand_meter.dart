@@ -24,14 +24,14 @@ class FormStandMeter extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
-                              return 'data lwbp masih kosong';
+                              return 'data LWBP masih kosong';
                             }
                             
                             this.lwbp.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
-                            labelText: 'Ir',
+                            labelText: 'LWBP',
                           ),
                         ),
                         TextFormField(
@@ -40,14 +40,14 @@ class FormStandMeter extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
-                              return 'data wbp masih kosong';
+                              return 'data WBP masih kosong';
                             }
                             
                             this.wbp.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
-                            labelText: 'Is',
+                            labelText: 'WBP',
                           ),
                         ),
                         TextFormField(
@@ -56,13 +56,13 @@ class FormStandMeter extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
-                              return 'data kvarh masih kosong';
+                              return 'data kVArH masih kosong';
                             }
                             this.kvarh.text = value;
                             return null;
                           },
                           decoration: InputDecoration(
-                            labelText: 'It',
+                            labelText: 'kVArH',
                           ),
                         ),
                       ],
