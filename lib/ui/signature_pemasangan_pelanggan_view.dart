@@ -33,7 +33,7 @@ class _SignaturePemasanganPelangganScreenState extends State<SignaturePemasangan
       backgroundColor: colorWhite,
       appBar: PreferredSize(
         preferredSize:
-        Size(screenWidth(context), screenHeight(context, dividedBy: 8)),
+        Size(screenWidth(context), screenHeight(context, dividedBy: 7)),
         child: SafeArea(
             child: Container(
               color: primaryColor1,
@@ -89,15 +89,16 @@ class _SignaturePemasanganPelangganScreenState extends State<SignaturePemasangan
               ),
             )),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      body: Container(
+        child:ListView(
         children: <Widget>[
+          SizedBox(height: 50),
           Stack(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
-color: cBgColor,
+                color: cBgColor,
                     child: SizedBox(
 //                        width: MediaQuery.of(context).size.width,
                         child: _signatureCanvas)),
@@ -116,17 +117,15 @@ color: cBgColor,
               ),)
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
+          RaisedButton(
                 color: primaryColor2,
                 child: Text('Simpan'),
                 onPressed: (){
                   Navigator.push(context, CupertinoPageRoute(builder: (context)=> SignaturePemasanganPetugasScreen()));
                 }),
-          )
         ],
       ),
+    )
     );
   }
 }

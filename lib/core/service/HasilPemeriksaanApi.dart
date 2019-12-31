@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class HasilPemeriksaanApi {
   static const host = "http://192.168.43.85";
@@ -50,6 +53,30 @@ class HasilPemeriksaanApi {
     print(body);
     var response = await http.post(url,headers: {"Authorization" : token,
       "Accept":"application/json"},body:body);
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+    }
+    var responseBody =  json.decode(response.body);
+    map = responseBody;
+    return map;
+  }
+   Future<Map<String,dynamic>> updateSignature(String token,String beritaAcara, Uint8List ttdPetugas,Uint8List ttdPelanggan) async{
+    print("Update tanda tangan tindak lanjut....");
+    print("Token : $token");
+    var map = new Map<String,dynamic>();
+    var url = Uri.parse(host+postfix+"/hasil_pemeriksaan/signature");
+    print("URL : $url");
+    var body = new Map<String,dynamic>();
+    body['berita_acara_id'] = beritaAcara;
+    body['ttd_petugas'] = base64Encode(ttdPetugas);
+    body['ttd_pelanggan'] = base64Encode(ttdPelanggan);
+    print("Body : "+body.toString());
+    var response = await http.post(url,
+      headers: {"Authorization":token},
+      body: body,
+    );
     final statusCode = response.statusCode;
     print('body: [${response.body}]');
     if(statusCode < 200 || statusCode >= 400){

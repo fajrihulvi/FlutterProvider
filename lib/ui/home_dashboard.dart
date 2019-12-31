@@ -52,13 +52,13 @@ class _HomeDashboardState extends State<HomeDashboard>
       ),
       body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
-        controller: _tabController,
-        children: <Widget>[
+          controller: _tabController,
+          children: <Widget>[
 
-          // HistoryPage(),.ProfileScreen(),
-          HomeScreen(),
-          HistoryScreen(),
-          ProfileScreen(),
+            // HistoryPage(),.ProfileScreen(),
+            HomeScreen(),
+            HistoryScreen(),
+            ProfileScreen(),
         ],
       ),
     );

@@ -88,14 +88,19 @@ class _DetailWoPemasanganScreenState extends State<DetailWoPemasanganScreen> {
               'Data Pelanggan',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
       ));
-    for (var ba in beritaAcara) {
-      items.add(new PemeriksaanCard(
-          beritaAcara: ba,
-          onTap: (){
-            Navigator.pushNamed(context, '/detail_pemasangan/first',arguments: ba);
-          }
-        )
-      );
+    if(beritaAcara == null){
+       items.add(Center(child: Text("Data Tidak Ada")));
+    }
+    else{ 
+      for (var ba in beritaAcara) {
+        items.add(new PemeriksaanCard(
+            beritaAcara: ba,
+            onTap: (){
+              Navigator.pushNamed(context, '/detail_pemasangan/first',arguments: ba);
+            }
+          )
+        );
+      }
     }
     return items;
   }

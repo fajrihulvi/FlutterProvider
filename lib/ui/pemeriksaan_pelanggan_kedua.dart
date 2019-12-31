@@ -7,7 +7,6 @@ import 'package:amr_apps/core/model/TindakLanjut.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/pemeriksaan_kedua.model.dart';
 import 'package:amr_apps/ui/base_view.dart';
-import 'package:amr_apps/ui/pemeriksaan_pelanggan_ketiga_screen.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:amr_apps/ui/widget/HasilPemeriksaanTile.dart';
@@ -22,8 +21,9 @@ class PemeriksaanPelangganKeduaScreen extends StatefulWidget {
   final int pelangganID;
   final int baID;
   final Berita_Acara beritaAcara;
+  final Map<String,dynamic> result;
 
-  const PemeriksaanPelangganKeduaScreen({this.pelangganID, this.baID,this.beritaAcara});
+  const PemeriksaanPelangganKeduaScreen({this.pelangganID, this.baID,this.beritaAcara,this.result});
   
   @override
   _PemeriksaanPelangganKeduaScreenState createState() => _PemeriksaanPelangganKeduaScreenState();
@@ -122,9 +122,15 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
                     onPressed: () async{
                       var tindakLanjutId = new List();
                       var tindakLanjutCheck = new List();
+                      var modem_id = new List();
+                      var sim_card_id = new List();
+                      var meter_id = new List();
                       for(var a in model.tindakLanjut){
                         tindakLanjutId.add(a.id);
                         tindakLanjutCheck.add(a.check);
+                        modem_id.add(int.parse(this.widget.result['modem_id']));
+                        meter_id.add(int.parse(this.widget.result['meter_id']));
+                        sim_card_id.add(int.parse(this.widget.result['card_id']));
                       }
                       var hasilPemeriksaanId = List();
                       var hasilPemeriksaanCheck = List();
@@ -132,7 +138,10 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
                         hasilPemeriksaanId.add(a.id);
                         hasilPemeriksaanCheck.add(a.check);
                       }
-                      var result = await model.insert(Provider.of<User>(context).token ,this.widget.baID, hasilPemeriksaanId,hasilPemeriksaanCheck,tindakLanjutId,tindakLanjutCheck
+                      var result = await model.insert(Provider.of<User>(context).token ,this.widget.baID, 
+                      hasilPemeriksaanId,hasilPemeriksaanCheck,
+                      tindakLanjutId,tindakLanjutCheck,
+                      modem_id,meter_id,sim_card_id
                       );
                       if(result['success']==true){
                         print(result['msg']);

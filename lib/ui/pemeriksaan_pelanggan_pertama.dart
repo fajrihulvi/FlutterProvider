@@ -253,7 +253,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                                     seconds: 3,
                                   ),(){
                                     Navigator.pushNamed(
-                                context, '/detail_pemeriksaan/second',arguments: this.widget.beritaAcara);
+                                context, '/detail_pemeriksaan/second',arguments:{ "berita_acara": this.widget.beritaAcara, "result" : result});
                                   }
                                 );
                             }

@@ -1,5 +1,6 @@
 import 'package:amr_apps/core/service/ArusApi.dart';
 import 'package:amr_apps/core/service/HasilPemeriksaanApi.dart';
+import 'package:amr_apps/core/service/KodeSegelApi.dart';
 import 'package:amr_apps/core/service/MeterApi.dart';
 import 'package:amr_apps/core/service/ModemApi.dart';
 import 'package:amr_apps/core/service/SimCardApi.dart';
@@ -7,7 +8,9 @@ import 'package:amr_apps/core/service/TindakLanjutApi.dart';
 import 'package:amr_apps/core/viewmodel/detail_pemasangan_model.dart';
 import 'package:amr_apps/core/viewmodel/meter_model.dart';
 import 'package:amr_apps/core/viewmodel/modem_model.dart';
+import 'package:amr_apps/core/viewmodel/pemasangan_kedua_model.dart';
 import 'package:amr_apps/core/viewmodel/pemeriksaan_kedua.model.dart';
+import 'package:amr_apps/core/viewmodel/signature_model.dart';
 import 'package:amr_apps/core/viewmodel/sim_card_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:amr_apps/core/service/api.dart';
@@ -20,6 +23,7 @@ import 'core/viewmodel/arus_model.dart';
 import 'core/viewmodel/detail_pemeriksaan_model.dart';
 import 'core/viewmodel/home_model.dart';
 import 'core/viewmodel/pemasangan_pertama_model.dart';
+import 'core/viewmodel/pemeriksaan_ketiga_model.dart';
 import 'core/viewmodel/pemeriksaan_pertama_model.dart';
 import 'core/viewmodel/stand_meter_model.dart';
 import 'core/viewmodel/tegangan_model.dart';
@@ -34,6 +38,7 @@ void setupLocator() {
  locator.registerLazySingleton(() => MeterApi());
  locator.registerLazySingleton(() => HasilPemeriksaanApi());
  locator.registerLazySingleton(() => TindakLanjutApi());
+ locator.registerLazySingleton(() => KodeSegelApi());
  locator.registerLazySingleton(()=>AuthService());
  locator.registerLazySingleton(()=>LoginModel());
  locator.registerFactory(()=>HomeModel());
@@ -48,4 +53,7 @@ void setupLocator() {
  locator.registerFactory(()=>ModemModel());
  locator.registerFactory(()=>MeterModel());
  locator.registerFactory(()=>PemeriksaanKeduaModel());
+ locator.registerFactory(()=>PemasanganKeduaModel());
+ locator.registerFactory(()=>PemeriksaanKetigaModel());
+ locator.registerFactory(()=>SignatureModel());
 }

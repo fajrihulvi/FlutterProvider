@@ -1,16 +1,16 @@
 import 'dart:convert';
-import 'package:amr_apps/core/model/SimCard.dart';
+import 'package:amr_apps/core/model/KodeSegel.dart';
 import 'package:http/http.dart' as http;
 
-class SimCardApi {
+class KodeSegelApi {
   static const host = "http://192.168.43.85";
   static const postfix = "/amr";
   var client = new http.Client();
-  Future<SimCard> getSimCardByPelanggan(String token,String pelangganID) async{
-    print("Get SimCard By Pelanggan....");
+  Future<KodeSegel> getKodeSegelByBA(String token,String hasilPemeriksaanID) async{
+    print("Get KodeSegel By BA....");
     print("Token : $token");
-    SimCard simCard;
-    var url = Uri.parse(host+postfix+"/sim_card?"+"pelanggan_id="+pelangganID.toString()+"&limit=1");
+    KodeSegel kodeSegel;
+    var url = Uri.parse(host+postfix+"/kode_segel?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -22,22 +22,22 @@ class SimCardApi {
     print('body: [${response.body}]');
     if(statusCode < 200 || statusCode >= 400){
       print("An Error Occured : [Status Code : $statusCode]");
-      simCard = new SimCard.initial();
-      return simCard;
+      kodeSegel = new KodeSegel.initial();
+      return kodeSegel;
     }
     var responseBody =  json.decode(response.body);
-    if(responseBody['sim_card']==null){
-      simCard = new SimCard.initial();
-      return simCard;
+    if(responseBody['kode_segel']==null){
+      kodeSegel = new KodeSegel.initial();
+      return kodeSegel;
     }
-    simCard = new SimCard.fromMap(responseBody['sim_card']);
-    return simCard;
+    kodeSegel = new KodeSegel.fromMap(responseBody['kode_segel']);
+    return kodeSegel;
   }
-  Future<Map<String,dynamic>> insertSimcard(String token,Map<String,dynamic> data) async{
-    print("Insert data meter....");
+  Future<Map<String,dynamic>> insertKodeSegel(String token,Map<String,dynamic> data) async{
+    print("Insert data kode_segel....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/sim_card");
+    var url = Uri.parse(host+postfix+"/kode_segel");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

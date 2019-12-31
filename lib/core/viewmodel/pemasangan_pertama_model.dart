@@ -34,21 +34,30 @@ class PemasanganPertamaModel extends BaseModel{
     if(result['success']==false){
       return result;
     }
-    result = await _modemApi.insertModem(token, modem);
-    if(result['success']==false){
-      return result;
+    var resultModem = await _modemApi.insertModem(token, modem);
+    if(resultModem['success']==false){
+      return resultModem;
     }
-    result = await _simCardApi.insertSimcard(token, simcard);
-    if(result['success']==false){
-      return result;
+    print("Result Modem : "+resultModem.toString());
+    String modem_id = resultModem['modem_id'];
+    var resultSimCard = await _simCardApi.insertSimcard(token, simcard);
+    if(resultSimCard['success']==false){
+      return resultSimCard;
     }
-    result = await _meterApi.insertMeter(token, meter);
-    if(result['success']==false){
-      return result;
+    print("Result Sim Card: "+resultSimCard.toString());
+    String card_id = resultSimCard['card_id'];
+    var resultMeter = await _meterApi.insertMeter(token, meter);
+    if(resultMeter['success']==false){
+      return resultMeter;
     }
+    print("Result Meter : "+resultMeter.toString());
+    String meter_id = resultMeter['meter_id'];
     var map = new Map<String,dynamic>();
     map['success'] = true;
     map['msg'] = "Data berhasil di input";
+    map['modem_id'] = modem_id;
+    map['card_id'] = card_id;
+    map['meter_id'] = meter_id;
     setState(ViewState.Idle);
     return map;
   }

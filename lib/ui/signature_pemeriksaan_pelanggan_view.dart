@@ -1,3 +1,4 @@
+import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_petugas_view.dart';
@@ -7,6 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
 class SignatureView extends StatefulWidget {
+  
+  final Berita_Acara beritaacara;
+
+  const SignatureView({this.beritaacara});
+  
   @override
   _SignatureViewState createState() => _SignatureViewState();
 }
@@ -33,7 +39,7 @@ class _SignatureViewState extends State<SignatureView> {
       backgroundColor: colorWhite,
       appBar: PreferredSize(
         preferredSize:
-        Size(screenWidth(context), screenHeight(context, dividedBy: 8)),
+        Size(screenWidth(context), screenHeight(context, dividedBy: 7)),
         child: SafeArea(
             child: Container(
               color: primaryColor1,
@@ -97,7 +103,7 @@ class _SignatureViewState extends State<SignatureView> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
-color: cBgColor,
+                color: cBgColor,
                     child: SizedBox(
 //                        width: MediaQuery.of(context).size.width,
                         child: _signatureCanvas)),
@@ -121,8 +127,12 @@ color: cBgColor,
             child: RaisedButton(
                 color: primaryColor2,
                 child: Text('Simpan'),
-                onPressed: (){
-                  Navigator.push(context, CupertinoPageRoute(builder: (context)=> SignaturePetugasScreen()));
+                onPressed: () async {
+                  var signaturePelanggan = await _signatureCanvas.exportBytes();
+                  print("Signature Pelanggan :"+signaturePelanggan.toString());
+                  if(signaturePelanggan != null){
+                    Navigator.pushNamed(context, '/signaturePetugas', arguments: {"berita_acara" : this.widget.beritaacara,"signature_pelanggan":signaturePelanggan});
+                    }
                 }),
           )
         ],

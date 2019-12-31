@@ -49,6 +49,9 @@ class Api {
     }
     var map = new Map<String,dynamic>();
     map = json.decode(response.body);
+    if(map['data']==null){
+      return null;
+    }
     var parsed = map['data'] as List<dynamic>;
     for (var wo in parsed) {
       print("WO $wo");
@@ -76,6 +79,9 @@ class Api {
     }
     var map = new Map<String,dynamic>();
     map = json.decode(response.body);
+    if(map['data']==null){
+      return null;
+    }
     var parsed = map['data'] as List<dynamic>;
     for (var beritaAcara in parsed) {
       print("WO $beritaAcara");

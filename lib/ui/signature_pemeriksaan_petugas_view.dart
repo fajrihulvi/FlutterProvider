@@ -1,18 +1,30 @@
+import 'dart:async';
+import 'dart:typed_data';
+
+import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/User.dart';
+import 'package:amr_apps/core/viewmodel/signature_model.dart';
+import 'package:amr_apps/ui/base_view.dart';
 import 'package:amr_apps/ui/home_dashboard.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 
 class SignaturePetugasScreen extends StatefulWidget {
+  final Uint8List signaturePelanggan;
+  final Berita_Acara beritaacara;
+
+  const SignaturePetugasScreen({this.signaturePelanggan, this.beritaacara});
   @override
   _SignaturePetugasScreenState createState() => _SignaturePetugasScreenState();
 }
 
 class _SignaturePetugasScreenState extends State<SignaturePetugasScreen> {
-
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 
 
@@ -27,13 +39,13 @@ class _SignaturePetugasScreenState extends State<SignaturePetugasScreen> {
         print(points);
       },
     );
-
-    // TODO: implement build
-    return Scaffold(
+    return BaseView<SignatureModel>(
+    builder: (context,model,child)=>Scaffold(
+      key: _scaffoldKey,
       backgroundColor: colorWhite,
       appBar: PreferredSize(
         preferredSize:
-        Size(screenWidth(context), screenHeight(context, dividedBy: 8)),
+        Size(screenWidth(context), screenHeight(context, dividedBy: 7)),
         child: SafeArea(
             child: Container(
               color: primaryColor1,
@@ -121,13 +133,44 @@ color: cBgColor,
             child: RaisedButton(
                 color: primaryColor2,
                 child: Text('Simpan'),
-                onPressed: (){
-                  Navigator.push(context, CupertinoPageRoute(builder: (context)=> HomeDashboard()));
+                onPressed: ()async{
+                  print("Berita acara :"+this.widget.beritaacara.id.toString());
+                  var ttdPetugas = await _signatureCanvas.exportBytes();
+                  var ttdPelanggan = this.widget.signaturePelanggan;
+                  var result = await model.updateSignature(
+                  Provider.of<User>(context).token, 
+                  this.widget.beritaacara.id.toString(), 
+                  ttdPetugas,ttdPelanggan
+                  );
+                  if(result['success']==true){
+                    print(result['msg']);
+                              _scaffoldKey.currentState.showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Colors.green,
+                                        duration: Duration(
+                                        seconds: 1
+                                      ),
+                                        content: Text(result['msg']))
+                                      );
+                                      Timer(
+                                        Duration(
+                                          seconds: 3,
+                                        ),(){
+                                          Navigator.pushNamed(context, '/');
+                                        }
+                                      );
+                  }
+                  else{
+                         _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 1),
+                                content: Text(result['msg'])));
+                      }
                 }),
           )
         ],
       ),
-    );
+    ));
   }
 
 }

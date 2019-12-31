@@ -38,17 +38,26 @@ class PemeriksaanPertamaModel extends BaseModel{
     if(result['success']==false){
       return result;
     }
+    print("Result Modem : "+result.toString());
+    String modem_id = result['modem_id'];
     result = await _simCardApi.insertSimcard(token, simcard);
-    if(result['success']==false){
+    if(result['success'] == false){
       return result;
     }
+    print("Result Sim Card: "+result.toString());
+    String card_id = result['card_id'];
     result = await _meterApi.insertMeter(token, meter);
     if(result['success']==false){
       return result;
     }
+    print("Result Meter : "+result.toString());
+    String meter_id = result['meter_id'];
     var map = new Map<String,dynamic>();
     map['success'] = true;
     map['msg'] = "Data berhasil di input";
+    map['card_id'] = card_id;
+    map['modem_id'] = modem_id;
+    map['meter_id'] = meter_id;
     setState(ViewState.Idle);
     return map;
   }

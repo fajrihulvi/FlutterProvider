@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/User.dart';
+import 'package:amr_apps/core/viewmodel/pemeriksaan_ketiga_model.dart';
+import 'package:amr_apps/ui/base_view.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
-import 'package:amr_apps/ui/signature_pemeriksaan_pelanggan_view.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PemeriksaanPelangganKetigaScreen extends StatefulWidget {
   final Berita_Acara beritaAcara;
@@ -16,10 +21,23 @@ class PemeriksaanPelangganKetigaScreen extends StatefulWidget {
 }
 
 class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganKetigaScreen> {
+  
+  final formKodesegel = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController 
+  boxAppSblm = TextEditingController(),
+  boxAppSsdh = TextEditingController(),
+  kwhSblm = TextEditingController(),
+  kwhSsdh = TextEditingController(),
+  pembatasSblm = TextEditingController(),
+  pembatasSsdh = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BaseView<PemeriksaanKetigaModel>(
+      onModelReady:(model)=>model.getKodeSegel(Provider.of<User>(context).token, this.widget.beritaAcara.id.toString()),
+      builder:(context,model,child)=>SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomPadding: true,
         backgroundColor: cBgColor,
         appBar: PreferredSize(
@@ -72,65 +90,53 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                 SizedBox(height: 10,),
                 Text('Kode Segel',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                 SizedBox(height: 20,),
-                Card(
-                  child:
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Box App',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Sebelum Pemeriksan',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Sesudah Pemeriksan',
-                          ),
-                        ),
-                        SizedBox(height: 20,),
-                        Text('KWH Meter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Sebelum Pemeriksan',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Sesudah Pemeriksan',
-                          ),
-                        ),
-                        SizedBox(height: 20,),
-                        Text('Pembatas',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Sebelum Pemeriksan',
-                          ),
-                        ),
-                        TextField(
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: 'Sesudah Pemeriksan',
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),),
+                Form(
+                  key: this.formKodesegel,
+                  child: this.getCardFormKodeSegel(model),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     RaisedButton(
                       color: primaryColor2,
-                      onPressed: (){
-                        Navigator.push(context, CupertinoPageRoute(builder: (context)=>SignatureView()));
+                      onPressed: ()async{
+                        if(this.formKodesegel.currentState.validate()){
+                          var map = Map<String,dynamic>();
+                          map['hasil_pemeriksaan_id'] = this.widget.beritaAcara.id.toString();
+                          map['boxapp_sebelum']= this.boxAppSblm.text;
+                          map['boxapp_sesudah']= this.boxAppSsdh.text;
+                          map['kwh_sebelum']= this.kwhSblm.text;
+                          map['kwh_sesudah']= this.kwhSsdh.text;
+                          map['pembatas_sebelum']= this.pembatasSblm.text;
+                          map['pembatas_sesudah']= this.pembatasSsdh.text;
+                          print(map);
+                          var result = await model.insert(Provider.of<User>(context).token, map);
+                          if(result['success']==true){
+                              print(result['msg']);
+                              _scaffoldKey.currentState.showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Colors.green,
+                                        duration: Duration(
+                                        seconds: 1
+                                      ),
+                                        content: Text(result['msg']))
+                                      );
+                                      Timer(
+                                        Duration(
+                                          seconds: 3,
+                                        ),(){
+                                          Navigator.pushNamed(
+                                      context, '/signaturePelanggan',arguments: widget.beritaAcara);
+                                        }
+                                      );
+                            }
+                            else{
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                      backgroundColor: Colors.red,
+                                      duration: Duration(seconds: 1),
+                                      content: Text(result['msg'])));
+                            }
+                        }
                       },
                       child: Text('Selanjutnya'),
 
@@ -144,6 +150,134 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
           ),
         ),
       ),
+    )
     );
+  }
+  Widget getCardFormKodeSegel(PemeriksaanKetigaModel model){
+    this.boxAppSblm.text = model.kodeSegel.boxAppSblm;
+    this.boxAppSsdh.text = model.kodeSegel.boxAppSsdh;
+    this.kwhSblm.text = model.kodeSegel.kwhSblm;
+    this.kwhSsdh.text = model.kodeSegel.kwhSsdh;
+    this.pembatasSblm.text = model.kodeSegel.pembatasSblm;
+    this.pembatasSsdh.text = model.kodeSegel.pembatasSsdh;
+    return Card(
+                  child:
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Box App',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Sebelum Pemeriksan',
+                          ),
+                          initialValue: model.kodeSegel.boxAppSblm,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return "Data masih kosong";
+                            }
+                            setState(() {
+                              this.boxAppSblm.text = value;
+                              model.kodeSegel.boxAppSblm =  value;
+                            });
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Sesudah Pemeriksan',
+                          ),
+                          initialValue: model.kodeSegel.boxAppSsdh,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return "Data masih kosong";
+                            }
+                            setState(() {
+                              this.boxAppSsdh.text = value;
+                              model.kodeSegel.boxAppSsdh =  value;
+                            });
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 20,),
+                        Text('KWH Meter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Sebelum Pemeriksan',
+                          ),
+                          initialValue: model.kodeSegel.kwhSblm,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return "Data masih kosong";
+                            }
+                            setState(() {
+                              this.kwhSblm.text = value;
+                              model.kodeSegel.kwhSblm =  value;
+                            });
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Sesudah Pemeriksan',
+                          ),
+                          initialValue: model.kodeSegel.kwhSsdh,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return "Data masih kosong";
+                            }
+                            setState(() {
+                              this.kwhSsdh.text = value;
+                              model.kodeSegel.kwhSsdh =  value;
+                            });
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 20,),
+                        Text('Pembatas',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Sebelum Pemeriksan',
+                          ),
+                          initialValue: model.kodeSegel.pembatasSblm,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return "Data masih kosong";
+                            }
+                            setState(() {
+                              this.pembatasSblm.text = value;
+                              model.kodeSegel.pembatasSblm =  value;
+                            });
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Sesudah Pemeriksan',
+                          ),
+                          initialValue: model.kodeSegel.pembatasSsdh,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return "Data masih kosong";
+                            }
+                            setState(() {
+                              this.pembatasSsdh.text = value;
+                              model.kodeSegel.pembatasSsdh =  value;
+                            });
+                            return null;
+                          },
+                        )
+
+                      ],
+                    ),
+                  ),
+                );
   }
 }
