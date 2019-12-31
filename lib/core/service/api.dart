@@ -23,7 +23,7 @@ class Api {
     });
     final statusCode = response.statusCode;
     print('body: [${response.body}]');
-    if(statusCode < 200 || statusCode > 400){
+    if(statusCode < 200 || statusCode >= 400){
       print("An Error Occured : [Status Code : $statusCode]");
       return null;
     }
@@ -64,6 +64,36 @@ class Api {
     print("Token : $token");
     var pelanggan = List<Berita_Acara>();
     var url = Uri.parse(host+postfix+"/berita_acara?"+"&nomor_wo="+nomorWO.toString());
+    print("URL : $url");
+    var response = await http.get(url,
+      headers: {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      }
+    );
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+      return null;
+    }
+    var map = new Map<String,dynamic>();
+    map = json.decode(response.body);
+    if(map['data']==null){
+      return null;
+    }
+    var parsed = map['data'] as List<dynamic>;
+    for (var beritaAcara in parsed) {
+      print("WO $beritaAcara");
+      pelanggan.add(Berita_Acara.fromWorkOrder(beritaAcara));
+    }
+    return pelanggan;
+  }
+  Future<List<Berita_Acara>> getHistoryByWo(String token,String jenisPemeliharaan) async{
+    print("Get Pelanggan By WO");
+    print("Token : $token");
+    var pelanggan = List<Berita_Acara>();
+    var url = Uri.parse(host+postfix+"/berita_acara/history?"+"&jenis_pemeliharaan="+jenisPemeliharaan.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {

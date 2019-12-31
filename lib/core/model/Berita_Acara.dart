@@ -2,6 +2,8 @@ class Berita_Acara {
   int _id;
   String _nomorBA;
   int _pelangganID;
+  int _ttdPelanggan;
+  int _ttdPetugas;
   String _noPelanggan;
   String _namaPelanggan;
   String _alamat;
@@ -13,6 +15,8 @@ class Berita_Acara {
   String get namaPelanggan => _namaPelanggan;
   String get alamat => _alamat;
   String get tarif => _tarif;
+  int get ttdPelanggan => _ttdPelanggan;
+  int get ttdPetugas => _ttdPetugas;
   Berita_Acara.fromWorkOrder(Map<String,dynamic> obj){
     _id = int.parse(obj['id']);
     _nomorBA = obj['nomor_ba'];
@@ -21,5 +25,7 @@ class Berita_Acara {
     _namaPelanggan = obj['nama_pelanggan'];
     _alamat = obj['alamat'];
     _tarif = obj['tarif'];
+    _ttdPetugas = obj['ttd_petugas'] ==null ? 0 : 1;
+    _ttdPelanggan = obj['ttd_pelanggan'] ==null ? 0 : 1;
   }
 }

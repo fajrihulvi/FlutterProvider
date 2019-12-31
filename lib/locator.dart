@@ -6,6 +6,7 @@ import 'package:amr_apps/core/service/ModemApi.dart';
 import 'package:amr_apps/core/service/SimCardApi.dart';
 import 'package:amr_apps/core/service/TindakLanjutApi.dart';
 import 'package:amr_apps/core/viewmodel/detail_pemasangan_model.dart';
+import 'package:amr_apps/core/viewmodel/history_model.dart';
 import 'package:amr_apps/core/viewmodel/meter_model.dart';
 import 'package:amr_apps/core/viewmodel/modem_model.dart';
 import 'package:amr_apps/core/viewmodel/pemasangan_kedua_model.dart';
@@ -56,4 +57,5 @@ void setupLocator() {
  locator.registerFactory(()=>PemasanganKeduaModel());
  locator.registerFactory(()=>PemeriksaanKetigaModel());
  locator.registerFactory(()=>SignatureModel());
+ locator.registerFactory(()=>HistoryModel());
 }

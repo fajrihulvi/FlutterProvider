@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     children: <Widget>[
                       Text(
-                        'Ikmal Firdaus',
+                        Provider.of<User>(context).full_name,
                         style: TextStyle(color: colorWhite, fontSize: 18),
                       ),
                       Spacer(),

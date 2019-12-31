@@ -30,7 +30,7 @@ class User {
     this.username = obj['user']['username'];
     this.token = obj['user']['token'];
     this.no_telp = obj['user']['no_telp'];
-    this.full_name = obj['user']['full_name'];
+    this.full_name = obj['user']['nama'];
     this.email = obj['user']['email'];
     this.work_order_id = obj['user']['work_order_id'];
     this.isLogin = obj['user']['token'] == null ? false :true;

@@ -1,3 +1,4 @@
+import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/ui/login_screen.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/image.dart';
@@ -5,6 +6,7 @@ import 'package:amr_apps/ui/shared/size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -62,8 +64,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Expanded(
                   child: Column(
                     children: <Widget>[
-                      AutoSizeText('Ikmal',style: TextStyle(fontSize: 16),),
-                      AutoSizeText('ID.08123456789'),
+                      AutoSizeText(Provider.of<User>(context).full_name,style: TextStyle(fontSize: 16),),
+                      AutoSizeText('ID.'+Provider.of<User>(context).no_telp),
                     ],
                   ),
                 )
