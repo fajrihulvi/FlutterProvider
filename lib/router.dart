@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:amr_apps/ui/cari_member_pasang_baru_screen.dart';
+import 'package:amr_apps/ui/cari_member_pemeriksaan_screen.dart';
 import 'package:amr_apps/ui/detail_wo_pemasangan_screen.dart';
 import 'package:amr_apps/ui/detail_wo_pemeriksaan_screen.dart';
+import 'package:amr_apps/ui/history_screen.dart';
 import 'package:amr_apps/ui/home_dashboard.dart';
 import 'package:amr_apps/ui/home_screen.dart';
 import 'package:amr_apps/ui/login_screen.dart';
@@ -74,9 +76,9 @@ class Router{
       case '/cari_pasang_baru':
         return MaterialPageRoute(builder: (_)=>CariMemberPasangBaruScreen());
       case '/cari_pemeriksaan':
-        return MaterialPageRoute(builder: (_)=>CariMemberPasangBaruScreen());
+        return MaterialPageRoute(builder: (_)=>CariMemberPemeriksaanScreen());
       case '/history':
-        return MaterialPageRoute(builder: (_)=>CariMemberPasangBaruScreen());
+        return MaterialPageRoute(builder: (_)=>HistoryScreen());
       default :
         return MaterialPageRoute(builder: (_)=>Scaffold(
           body: Center(child: Text("No route defined for ${settings.name}")),

@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       initialData: User.initial(),
       builder: (context)=>locator<AuthService>().userController,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),

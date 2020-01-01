@@ -28,7 +28,7 @@ class _CariMemberPemeriksaanScreenState extends State<CariMemberPemeriksaanScree
       builder:(context,model,child)=>Scaffold(
       appBar: PreferredSize(
         preferredSize:
-        Size(screenWidth(context), screenHeight(context, dividedBy: 3)),
+        Size(screenWidth(context), screenHeight(context, dividedBy: 4.5)),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,15 +75,17 @@ class _CariMemberPemeriksaanScreenState extends State<CariMemberPemeriksaanScree
   }
   List<Widget> getUserBar(List<Berita_Acara> beritaAcara){
     var items = new List<Widget>();
-    
-    items.add(Center(child: Text("tidak ada data member")));
     if(beritaAcara == null){
+      items.add(Center(child: Text("tidak ada data member")));
       return items;
     }
     for(var ba in beritaAcara){
       if(ba.ttdPetugas == 0 || ba.ttdPelanggan == 0){
         items.add(this.getSingleUserBar(ba));
       }
+    }
+    if(items.length==0){
+      items.add(Center(child: Text("tidak ada data member")));
     }
     return items;
   }

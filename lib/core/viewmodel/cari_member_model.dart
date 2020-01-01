@@ -8,9 +8,9 @@ import '../../locator.dart';
 class CariMemberModel extends BaseModel{
   Api _api = locator<Api>();
   List<Berita_Acara> beritaAcara;
-  Future getberitaAcara(String token, String jenisPemeliharaan)async{
+  Future getberitaAcara(String token, String jenis)async{
     setState(ViewState.Busy);
-    beritaAcara = await _api.getHistoryByWo(token,jenisPemeliharaan);
+    beritaAcara = await _api.cariMember(token,jenis);
     setState(ViewState.Idle);
   }
 }
