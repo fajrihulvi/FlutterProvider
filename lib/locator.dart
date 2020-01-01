@@ -21,6 +21,7 @@ import 'core/service/StandMeterApi.dart';
 import 'core/service/TeganganApi.dart';
 import 'core/service/auth_service.dart';
 import 'core/viewmodel/arus_model.dart';
+import 'core/viewmodel/cari_member_model.dart';
 import 'core/viewmodel/detail_pemeriksaan_model.dart';
 import 'core/viewmodel/home_model.dart';
 import 'core/viewmodel/pemasangan_pertama_model.dart';
@@ -58,4 +59,5 @@ void setupLocator() {
  locator.registerFactory(()=>PemeriksaanKetigaModel());
  locator.registerFactory(()=>SignatureModel());
  locator.registerFactory(()=>HistoryModel());
+ locator.registerFactory(()=>CariMemberModel());
 }

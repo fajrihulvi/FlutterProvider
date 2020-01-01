@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(context, '/');
                     }
                     else{
-                      Scaffold.of(context).showSnackBar(new SnackBar(content: Text("Username atau password salah"),
+                      _key.currentState.showSnackBar(new SnackBar(content: Text("Username atau password salah"),
                         backgroundColor: Colors.red,
                       ));
                     }

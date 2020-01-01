@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
+import 'package:amr_apps/core/service/ApiSetting.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -8,12 +9,13 @@ import 'package:http_parser/http_parser.dart';
 class HasilPemeriksaanApi {
   static const host = "http://192.168.43.85";
   static const postfix = "/amr";
+  var apiSetting = new ApiSetting.initial();
   var client = new http.Client();
   Future<List<HasilPemeriksaan>> getHasilPemeriksaan(String token,String jenisPemeriksaan) async{
     print("Get Hasil Pemeriksaan....");
     print("Token : $token");
     var hasilpemeriksaan = List<HasilPemeriksaan>();
-    var url = Uri.parse(host+postfix+"/hasil_pemeriksaan?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/hasil_pemeriksaan?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -44,7 +46,7 @@ class HasilPemeriksaanApi {
     print("Insert Hasil Pemeriksaan....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.encodeFull(host+postfix+"/hasil_pemeriksaan");
+    var url = Uri.encodeFull(apiSetting.host+apiSetting.postfix+"/hasil_pemeriksaan");
     print("URL : $url");
     var body = new Map<String,dynamic>();
     body["check"] = json.encode(check);
@@ -66,7 +68,7 @@ class HasilPemeriksaanApi {
     print("Update tanda tangan tindak lanjut....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/hasil_pemeriksaan/signature");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/hasil_pemeriksaan/signature");
     print("URL : $url");
     var body = new Map<String,dynamic>();
     body['berita_acara_id'] = beritaAcara;

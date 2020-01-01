@@ -3,15 +3,18 @@ import 'dart:convert';
 import 'package:amr_apps/core/model/Arus.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class ArusApi {
   static const host = "http://192.168.43.85";
   static const postfix = "/amr";
+  var apiSetting = ApiSetting.initial();
   var client = new http.Client();
   Future<Arus> getArusByBA(String token,String hasilPemeriksaanID) async{
     print("Get Arus By BA....");
     print("Token : $token");
     Arus arus;
-    var url = Uri.parse(host+postfix+"/arus?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/arus?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -38,7 +41,7 @@ class ArusApi {
     print("Insert data arus....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/arus");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/arus");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

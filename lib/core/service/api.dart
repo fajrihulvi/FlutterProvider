@@ -5,13 +5,15 @@ import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/model/WorkOrder.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class Api {
   static const host = "http://192.168.43.85";
   static const postfix = "/amr";
   var client = new http.Client();
-
+  var apiSetting = new ApiSetting.initial();
   Future<User> login(String username,String password) async{
-    var _url = host+postfix+"/auth/login";
+    var _url = apiSetting.host+apiSetting.postfix+"/auth/login";
     print("URL : {$_url}");
     var response = await http.post(_url,
       headers: {
@@ -33,7 +35,7 @@ class Api {
     print("Get Work Order");
     print("Token : $token");
     var workOrder = List<WorkOrder>();
-    var url = Uri.parse(host+postfix+"/work_order?"+"&limit="+limit.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/work_order?"+"&limit="+limit.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -63,7 +65,7 @@ class Api {
     print("Get Pelanggan By WO");
     print("Token : $token");
     var pelanggan = List<Berita_Acara>();
-    var url = Uri.parse(host+postfix+"/berita_acara?"+"&nomor_wo="+nomorWO.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/berita_acara?"+"&nomor_wo="+nomorWO.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -93,7 +95,7 @@ class Api {
     print("Get Pelanggan By WO");
     print("Token : $token");
     var pelanggan = List<Berita_Acara>();
-    var url = Uri.parse(host+postfix+"/berita_acara/history?"+"&jenis_pemeliharaan="+jenisPemeliharaan.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/berita_acara/history?"+"&jenis_pemeliharaan="+jenisPemeliharaan.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {

@@ -1,11 +1,15 @@
+import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/User.dart';
+import 'package:amr_apps/core/viewmodel/cari_member_model.dart';
+import 'package:amr_apps/ui/base_view.dart';
 import 'package:amr_apps/ui/map_screen.dart';
-import 'package:amr_apps/ui/pemasangan_pelanggan_pertama.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/widget/maps.dart';
 import 'package:amr_apps/ui/widget/search_bar.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class CariMemberPasangBaruScreen extends StatefulWidget {
@@ -14,12 +18,17 @@ class CariMemberPasangBaruScreen extends StatefulWidget {
 }
 
 class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen> {
+  
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseView<CariMemberModel>(
+      onModelReady: (model)=>model.getberitaAcara(Provider.of<User>(context).token, "Pasang Baru"),
+    builder:(context,model,child)=>Scaffold(
+      key:_scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-        Size(screenWidth(context), screenHeight(context, dividedBy: 5)),
+        Size(screenWidth(context), screenHeight(context, dividedBy: 3)),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,9 +67,32 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
-            InkWell(
-              onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> MapScreen())),
+          children: this.getUserBar(model.beritaAcara)
+        ),
+      ),
+      )
+    );
+  }
+  List<Widget> getUserBar(List<Berita_Acara> beritaAcara){
+    var items = new List<Widget>();
+    
+    items.add(Center(child: Text("tidak ada data member")));
+    if(beritaAcara == null){
+      return items;
+    }
+    for(var ba in beritaAcara){
+      if(ba.ttdPetugas == 0 || ba.ttdPelanggan == 0){
+        items.add(this.getSingleUserBar(ba));
+      }
+    }
+    return items;
+  }
+  Widget getSingleUserBar(Berita_Acara beritaAcara){
+    return InkWell(
+              onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> MapScreen(
+                lat: beritaAcara.lat == null ? "-2.070556" : beritaAcara.lat,
+                long: beritaAcara.long == null ? "106.077080" : beritaAcara.long
+              ))),
               child: Card(
                 child:
                 Padding(
@@ -72,15 +104,18 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            AutoSizeText('Firdaus Ikmal'),
-                            AutoSizeText('ID Pel : 1213292'),
+                            AutoSizeText(beritaAcara.namaPelanggan),
+                            AutoSizeText('ID Pel : '+beritaAcara.noPelanggan),
                           ],
                         ),
                         children: <Widget>[
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height / 2,
-                            child: MapsScreen(),
+                            child: MapsScreen(
+                              lat: beritaAcara.lat == null ? "-2.070556" : beritaAcara.lat,
+                              long: beritaAcara.long == null ? "106.077080" : beritaAcara.long
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -89,24 +124,17 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
                                   color: primaryColor1,
                                   child: Text('Pasang Sekarang'),
                                   onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PemasanganPelangganPertamaScreen()));
-
+                                    Navigator.pushNamed(context, "/detail_pemasangan/first",arguments: beritaAcara);
                                   }
                               ),
                             ],
                           )
                         ],
-
                       )
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-
     );
   }
 }

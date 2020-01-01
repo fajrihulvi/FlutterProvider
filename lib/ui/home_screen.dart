@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   InkWell(
-                    onTap: ()=> Navigator.push(context, CupertinoPageRoute(builder: (context)=>CariMemberPemeriksaanScreen())),
+                    onTap: ()=> Navigator.pushNamed(context, '/cari_pemeriksaan'),
                     child: Card(
                       child: Container(
                         height: 150,
@@ -118,10 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Spacer(),
                   InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => CariMemberPasangBaruScreen())),
+                    onTap: () => Navigator.pushNamed(context, '/cari_pasang_baru'),
                     child: Card(
                       child: Container(
                         height: 150,

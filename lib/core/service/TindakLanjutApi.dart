@@ -4,15 +4,16 @@ import 'dart:typed_data';
 import 'package:amr_apps/core/model/TindakLanjut.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class TindakLanjutApi {
-  static const host = "http://192.168.43.85";
-  static const postfix = "/amr";
+  var apiSetting  = new ApiSetting.initial();
   var client = new http.Client();
   Future<List<TindakLanjut>> getTindakLanjut(String token,String jenisPemeriksaan) async{
     print("Get Tindak Lanjut....");
     print("Token : $token");
     var tindaklanjut = new List<TindakLanjut>();
-    var url = Uri.parse(host+postfix+"/tindak_lanjut?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/tindak_lanjut?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -44,7 +45,7 @@ class TindakLanjutApi {
     print("Insert Tindak Lanjut....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.encodeFull(host+postfix+"/tindak_lanjut");
+    var url = Uri.encodeFull(apiSetting.host+apiSetting.postfix+"/tindak_lanjut");
     print("URL : $url");
     var body = new Map<String,dynamic>();
     body["check"] = json.encode(check);
@@ -69,7 +70,7 @@ class TindakLanjutApi {
      print("Update tanda tangan hasil pemeriksaan....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/tindak_lanjut/signature");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/tindak_lanjut/signature");
     print("URL : $url");
     var body = new Map<String,dynamic>();
     body['berita_acara_id'] = beritaAcara;

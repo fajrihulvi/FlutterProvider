@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'package:amr_apps/core/model/KodeSegel.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class KodeSegelApi {
-  static const host = "http://192.168.43.85";
-  static const postfix = "/amr";
+  var apiSetting = new ApiSetting.initial();
   var client = new http.Client();
   Future<KodeSegel> getKodeSegelByBA(String token,String hasilPemeriksaanID) async{
     print("Get KodeSegel By BA....");
     print("Token : $token");
     KodeSegel kodeSegel;
-    var url = Uri.parse(host+postfix+"/kode_segel?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/kode_segel?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -37,7 +38,7 @@ class KodeSegelApi {
     print("Insert data kode_segel....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/kode_segel");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/kode_segel");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

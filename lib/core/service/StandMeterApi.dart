@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'package:amr_apps/core/model/StandMeter.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class StandMeterApi {
-  static const host = "http://192.168.43.85";
-  static const postfix = "/amr";
+  var apiSetting = new ApiSetting.initial();
   var client = new http.Client();
   Future<StandMeter> getStandMeterByBA(String token,String hasilPemeriksaanID) async{
     print("Get StandMeter By BA....");
     print("Token : $token");
     StandMeter stand_meter;
-    var url = Uri.parse(host+postfix+"/stand_meter?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/stand_meter?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -37,7 +38,7 @@ class StandMeterApi {
     print("Insert data stand_meter....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/stand_meter");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/stand_meter");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

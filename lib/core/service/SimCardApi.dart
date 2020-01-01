@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'package:amr_apps/core/model/SimCard.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class SimCardApi {
-  static const host = "http://192.168.43.85";
-  static const postfix = "/amr";
+  var apiSetting = new ApiSetting.initial();
   var client = new http.Client();
   Future<SimCard> getSimCardByPelanggan(String token,String pelangganID) async{
     print("Get SimCard By Pelanggan....");
     print("Token : $token");
     SimCard simCard;
-    var url = Uri.parse(host+postfix+"/sim_card?"+"pelanggan_id="+pelangganID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/sim_card?"+"pelanggan_id="+pelangganID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -37,7 +38,7 @@ class SimCardApi {
     print("Insert data meter....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/sim_card");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/sim_card");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

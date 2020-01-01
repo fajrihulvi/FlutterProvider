@@ -44,6 +44,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     return Scaffold(
       backgroundColor: cBgColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: primaryColor1,
         title: Text('History'),
         bottom: TabBar(

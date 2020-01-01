@@ -7,6 +7,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'menu.dart';
 
 class MapsScreen extends StatefulWidget {
+  final String lat,long;
+
+  const MapsScreen({this.lat, this.long});
   @override
   _MapsScreenState createState() => _MapsScreenState();
 }

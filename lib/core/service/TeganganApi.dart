@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'package:amr_apps/core/model/Tegangan.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class TeganganApi {
-  static const host = "http://192.168.43.85";
-  static const postfix = "/amr";
+  var apiSetting  = new ApiSetting.initial();
   var client = new http.Client();
   Future<Tegangan> getTeganganByBA(String token,String hasilPemeriksaanID) async{
     print("Get Tegangan By BA....");
     print("Token : $token");
     Tegangan tegangan;
-    var url = Uri.parse(host+postfix+"/tegangan?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/tegangan?"+"hasil_pemeriksaan_id="+hasilPemeriksaanID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -37,7 +38,7 @@ class TeganganApi {
     print("Insert data tegangan....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/tegangan");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/tegangan");
     print("URL : $url");
     var response = await http.post(url,
       headers: {

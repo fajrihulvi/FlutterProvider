@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'package:amr_apps/core/model/Modem.dart';
 import 'package:http/http.dart' as http;
 
+import 'ApiSetting.dart';
+
 class ModemApi {
-  static const host = "http://192.168.43.85";
-  static const postfix = "/amr";
+  var apiSetting = new ApiSetting.initial();
   var client = new http.Client();
   Future<Modem> getModemByPelanggan(String token,String pelangganID) async{
     print("Get Modem By Pelanggan....");
     print("Token : $token");
     Modem modem;
-    var url = Uri.parse(host+postfix+"/modem?"+"pelanggan_id="+pelangganID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/modem?"+"pelanggan_id="+pelangganID.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -37,7 +38,7 @@ class ModemApi {
     print("Insert data modem....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
-    var url = Uri.parse(host+postfix+"/modem");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/modem");
     print("URL : $url");
     var response = await http.post(url,
       headers: {
