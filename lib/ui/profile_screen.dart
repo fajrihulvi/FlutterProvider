@@ -1,7 +1,6 @@
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/ui/login_screen.dart';
 import 'package:amr_apps/ui/shared/color.dart';
-import 'package:amr_apps/ui/shared/image.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:community_material_icon/community_material_icon.dart';
@@ -52,12 +51,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         shape: BoxShape.circle,
                         color: primaryColor1
                       ),
-                      child: CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: AssetImage(lewy),
-                        backgroundColor: Colors.transparent,
-                      ),
-
+                      child: Container(
+                        child: Container(
+                          child: Icon(Icons.person,color: Colors.white),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white
+                        ),
+                      )
                     ),
                   ),
                 ),

@@ -2,8 +2,6 @@ import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/model/WorkOrder.dart';
 import 'package:amr_apps/core/viewmodel/home_model.dart';
-import 'package:amr_apps/ui/cari_member_pasang_baru_screen.dart';
-import 'package:amr_apps/ui/cari_member_pemeriksaan_screen.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/image.dart';
 import 'package:amr_apps/ui/shared/size.dart';
@@ -148,32 +146,42 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   List<Widget> getPemeliharaanUi(List<WorkOrder> workOrder) {
-    var items = new List<WoCard>();
-    for (var wo in workOrder) {
-      if(wo.jenisPemeliharaan.contains("Pemeliharaan")){
-        items.add(new WoCard(
-          workOrder: wo,
-          title: "WO Pemeriksaan",
-          onTap: (){
-            print(wo.nomorWO);
-            Navigator.pushNamed(context, '/detail_pemeriksaan',arguments: wo);
-          },
-        ));
+    var items = new List<Widget>();
+    if(workOrder.length==0 || workOrder == null){
+      items.add(Center(child: Text("tidak ada data")));
+    }
+    else{
+      for (var wo in workOrder) {
+        if(wo.jenisPemeliharaan.contains("Pemeliharaan")){
+          items.add(new WoCard(
+            workOrder: wo,
+            title: "WO Pemeriksaan",
+            onTap: (){
+              print(wo.nomorWO);
+              Navigator.pushNamed(context, '/detail_pemeriksaan',arguments: wo);
+            },
+          ));
+        }
       }
     }
     return items;
   }
   List<Widget> getPelangganBaruUi(List<WorkOrder> workOrder) {
-    var items = new List<WoCard>();
-    for (var wo in workOrder) {
-      if(wo.jenisPemeliharaan.contains("Pasang Baru")){
-        items.add(new WoCard(
-          workOrder: wo,
-          title: "WO Pemasangan Baru",
-          onTap: (){
-            Navigator.pushNamed(context, '/detail_pemasangan',arguments: wo);
-          },
-        ));
+    var items = new List<Widget>();
+    if(workOrder == null || workOrder.length==0){
+      items.add(Center(child: Text("Tidak ada data")));
+    }
+    else{
+      for (var wo in workOrder) {
+        if(wo.jenisPemeliharaan.contains("Pasang Baru")){
+          items.add(new WoCard(
+            workOrder: wo,
+            title: "WO Pemasangan Baru",
+            onTap: (){
+              Navigator.pushNamed(context, '/detail_pemasangan',arguments: wo);
+            },
+          ));
+        }
       }
     }
     return items;
