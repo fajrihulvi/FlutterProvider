@@ -43,7 +43,7 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
   @override
   Widget build(BuildContext context) {
     return BaseView<PemeriksaanKeduaModel>(
-    onModelReady : (model)=>model.getPemeliharaan(Provider.of<User>(context).token),
+    onModelReady : (model)=>model.getPemeliharaan(Provider.of<User>(context).token,this.widget.beritaAcara.id.toString()),
     builder : (context,model,child)=>Scaffold(
       key: _scaffoldKey,
       backgroundColor: cBgColor,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/pemeriksaan_ketiga_model.dart';
@@ -82,7 +83,9 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                 ),
               )),
         ),
-        body: SingleChildScrollView(
+        body: model.state == ViewState.Busy ? 
+        Center(child: CircularProgressIndicator()) :
+        SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,

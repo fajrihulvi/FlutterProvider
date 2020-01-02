@@ -1,3 +1,4 @@
+import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/cari_member_model.dart';
@@ -9,6 +10,7 @@ import 'package:amr_apps/ui/widget/search_bar.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 
@@ -18,17 +20,26 @@ class CariMemberPasangBaruScreen extends StatefulWidget {
 }
 
 class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen> {
-  
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var items = List<Widget>();
+  String query;
+  Widget body;
+  CariMemberModel model = new CariMemberModel();
+  TextEditingController inputBar = new TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    query = "";
+  }
   @override
   Widget build(BuildContext context) {
-    return BaseView<CariMemberModel>(
-      onModelReady: (model)=>model.getberitaAcara(Provider.of<User>(context).token, "Pasang Baru"),
-    builder:(context,model,child)=>Scaffold(
+    return Scaffold(
       key:_scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-        Size(screenWidth(context), screenHeight(context, dividedBy: 3)),
+        Size(screenWidth(context), screenHeight(context, dividedBy: 4.5)),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,48 +61,70 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
                 ),
               ),
               RewardSearchBar(
-                titleSearch: 'Cari Member Anda',
-                onBarcodePressed: () {
-                  print('A');
+                titleSearch: 'Ketikan nama, alamat, atau ID member',
+                inputBar: inputBar,
+                onBarcodePressed: (val) {
+                  setState(() {
+                    this.setBody(context, val);
+                  });
                 },
                 onDrawerPressed: (){
                   print('A');
                 },
                 onChanged: (val) {
-                print('A');
+                  setState(() {
+                    this.setBody(context, val);
+                  });
                 },
               ),
             ],
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: this.getUserBar(model.beritaAcara)
-        ),
-      ),
-      )
+      body: this.body,
     );
   }
+  void setBody(BuildContext context, String query)async{
+    await model.getberitaAcara(Provider.of<User>(context).token, "Pasang Baru", query);
+    setState(() {
+        this.body = model.state == ViewState.Busy ?
+        CircularProgressIndicator() :
+        Container(
+          child:SingleChildScrollView(
+            child: Column(
+              children:this.getUserBar(model.beritaAcara),
+            ),
+          ),
+        );
+      });
+  }
   List<Widget> getUserBar(List<Berita_Acara> beritaAcara){
-    var items = new List<Widget>();
-    
-    items.add(Center(child: Text("tidak ada data member")));
-    if(beritaAcara == null){
-      return items;
-    }
-    for(var ba in beritaAcara){
-      if(ba.ttdPetugas == 0 || ba.ttdPelanggan == 0){
-        items.add(this.getSingleUserBar(ba));
-      }
-    }
-    return items;
+       print(beritaAcara);
+        var items = new List<Widget>();
+        if(beritaAcara == null){
+          items.add(Center(child: Text("tidak ada data member")));
+          return items;
+        }
+        else{
+          for(var ba in beritaAcara){
+            if(ba.ttdPetugas == 0 || ba.ttdPelanggan == 0){
+              items.add(this.getSingleUserBar(ba));
+            }
+          }
+          if(items.length==0){
+            items.add(Center(child: Text("tidak ada data member")));
+          }
+        }
+        return items;
   }
   Widget getSingleUserBar(Berita_Acara beritaAcara){
     return InkWell(
               onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> MapScreen(
-                lat: beritaAcara.lat == null ? "-2.070556" : beritaAcara.lat,
-                long: beritaAcara.long == null ? "106.077080" : beritaAcara.long
+                beritaAcara: beritaAcara,
+                myPosition: LatLng(double.parse("-2.070556"),double.parse("106.077080")),
+                pelangganPosition: beritaAcara.lat == null || beritaAcara.long == null ? 
+                LatLng(double.parse("-2.070556"),double.parse("106.077080")) : 
+                LatLng(double.parse(beritaAcara.lat),double.parse(beritaAcara.long)),
               ))),
               child: Card(
                 child:
@@ -113,8 +146,11 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height / 2,
                             child: MapsScreen(
-                              lat: beritaAcara.lat == null ? "-2.070556" : beritaAcara.lat,
-                              long: beritaAcara.long == null ? "106.077080" : beritaAcara.long
+                              beritaAcara: beritaAcara,
+                              myPosition: LatLng(double.parse("-2.070556"),double.parse("106.077080")),
+                              pelangganPosition: beritaAcara.lat == null || beritaAcara.long == null ? 
+                              LatLng(double.parse("-2.070556"),double.parse("106.077080")) : 
+                              LatLng(double.parse(beritaAcara.lat),double.parse(beritaAcara.long)),
                             ),
                           ),
                           Row(

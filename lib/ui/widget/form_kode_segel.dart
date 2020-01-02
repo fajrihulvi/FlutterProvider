@@ -21,8 +21,7 @@ class FormKodeSegel extends StatelessWidget {
                             labelText: 'Sebelum Pemeriksan',
                           ),
                           controller: this.boxAppSblm,
-                          onChanged: (value){
-                          },
+                          onChanged: this.onChange
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,

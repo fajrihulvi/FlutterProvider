@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 class RewardSearchBar extends StatelessWidget {
   final Function(String) onChanged;
-  final Function onBarcodePressed;
+  final Function (String)onBarcodePressed;
   final Function onDrawerPressed;
   final String titleSearch;
-
+  final TextEditingController inputBar;
   const RewardSearchBar({
     Key key,
     @required this.onChanged,
     @required this.onBarcodePressed,
     @required this.onDrawerPressed,
-    @required this.titleSearch
+    @required this.titleSearch,
+    @required this.inputBar,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,13 +40,15 @@ class RewardSearchBar extends StatelessWidget {
 //            ),
             Expanded(
               child: TextField(
+                controller: inputBar,
                 onChanged: (val) => onChanged(val),
                 decoration: InputDecoration(
                     hintText: titleSearch, border: InputBorder.none, hintStyle: TextStyle(color: primaryColor2)),
               ),
             ),
             IconButton(
-              onPressed: () => onBarcodePressed(),
+              onPressed: ()=>
+                onBarcodePressed(this.inputBar.text),
               icon: Icon(
 //                CommunityMaterialIcons.feature_search,
               Icons.search,

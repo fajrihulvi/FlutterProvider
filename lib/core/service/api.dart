@@ -121,11 +121,11 @@ class Api {
     }
     return pelanggan;
   }
-  Future<List<Berita_Acara>> cariMember(String token,String jenisPemeliharaan) async{
+  Future<List<Berita_Acara>> cariMember(String token,String jenisPemeliharaan,String query) async{
     print("Get Pelanggan By WO");
     print("Token : $token");
     var pelanggan = List<Berita_Acara>();
-    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/berita_acara/cari_member?"+"&jenis_pemeliharaan="+jenisPemeliharaan.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/berita_acara/cari_member?"+"jenis_pemeliharaan="+jenisPemeliharaan.toString()+"&query="+query);
     print("URL : $url");
     var response = await http.get(url,
       headers: {

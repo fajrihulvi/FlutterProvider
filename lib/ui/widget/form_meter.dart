@@ -11,9 +11,6 @@ class FormMeter extends StatelessWidget {
   FormMeter({this.merkMeter,this.tipeMeter,this.noSeri,this.pelangganID,this.meter});
   @override
   Widget build(BuildContext context) {
-    TextEditingController _merkMeter = new TextEditingController(text:this.meter.merk);
-    TextEditingController _tipeMeter = new TextEditingController(text:this.meter.tipe);
-    TextEditingController _noSeri = new TextEditingController(text:this.meter.noSERI);
     return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -21,7 +18,7 @@ class FormMeter extends StatelessWidget {
                       children: <Widget>[
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _merkMeter,
+                          initialValue: this.meter.merk,
                           decoration: InputDecoration(
                             labelText: 'Merk Meter',
                           ),
@@ -36,7 +33,7 @@ class FormMeter extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _tipeMeter,
+                          initialValue: this.meter.tipe,
                           decoration: InputDecoration(
                             labelText: 'Type Meter',
                           ),
@@ -51,7 +48,7 @@ class FormMeter extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _noSeri,
+                          initialValue: this.meter.noSERI,
                           decoration: InputDecoration(
                             labelText: 'ID Meter',
                           ),

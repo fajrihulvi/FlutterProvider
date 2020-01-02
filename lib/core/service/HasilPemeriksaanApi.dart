@@ -11,11 +11,11 @@ class HasilPemeriksaanApi {
   static const postfix = "/amr";
   var apiSetting = new ApiSetting.initial();
   var client = new http.Client();
-  Future<List<HasilPemeriksaan>> getHasilPemeriksaan(String token,String jenisPemeriksaan) async{
+  Future<List<HasilPemeriksaan>> getHasilPemeriksaan(String token,String jenisPemeriksaan,String beritaAcara) async{
     print("Get Hasil Pemeriksaan....");
     print("Token : $token");
     var hasilpemeriksaan = List<HasilPemeriksaan>();
-    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/hasil_pemeriksaan?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/hasil_pemeriksaan?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString()+"&berita_acara_id="+beritaAcara);
     print("URL : $url");
     var response = await http.get(url,
       headers: {

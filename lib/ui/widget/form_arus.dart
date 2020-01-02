@@ -10,9 +10,6 @@ class FormArus extends StatelessWidget {
   FormArus({this.lr,this.ls,this.lt,this.pemeriksaanID,this.arus});
   @override
   Widget build(BuildContext context) {
-    TextEditingController _lr = new TextEditingController(text:this.arus.lr);
-    TextEditingController _ls = new TextEditingController(text:this.arus.ls);
-    TextEditingController _lt = new TextEditingController(text:this.arus.lt);
     return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -20,7 +17,7 @@ class FormArus extends StatelessWidget {
                       children: <Widget>[
                         TextFormField(
                           enabled: true,
-                          controller: _lr,
+                          initialValue: this.arus.lr,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
@@ -34,7 +31,7 @@ class FormArus extends StatelessWidget {
                           ),
                         ),
                         TextFormField(
-                          controller: _ls,
+                          initialValue: this.arus.ls,
                           enabled: true,
                           keyboardType: TextInputType.text,
                           validator: (value){
@@ -51,7 +48,7 @@ class FormArus extends StatelessWidget {
                         ),
                         TextFormField(
                           enabled: true,
-                          controller: _lt,
+                          initialValue: this.arus.lt,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){

@@ -9,11 +9,11 @@ import 'ApiSetting.dart';
 class TindakLanjutApi {
   var apiSetting  = new ApiSetting.initial();
   var client = new http.Client();
-  Future<List<TindakLanjut>> getTindakLanjut(String token,String jenisPemeriksaan) async{
+  Future<List<TindakLanjut>> getTindakLanjut(String token,String jenisPemeriksaan,String beritaAcara) async{
     print("Get Tindak Lanjut....");
     print("Token : $token");
     var tindaklanjut = new List<TindakLanjut>();
-    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/tindak_lanjut?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/tindak_lanjut?"+"jenis_pemeliharaan="+jenisPemeriksaan.toString()+"&berita_acara_id="+beritaAcara);
     print("URL : $url");
     var response = await http.get(url,
       headers: {

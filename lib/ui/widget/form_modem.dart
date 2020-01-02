@@ -13,10 +13,6 @@ class FormModem extends StatelessWidget {
   FormModem({this.merkModem,this.tipeModem,this.noImei,this.noSimcard,this.pelangganID,this.simCard,this.modem});
   @override
   Widget build(BuildContext context) {
-    TextEditingController _noImei = new TextEditingController(text:this.modem.noIMEI);
-    TextEditingController _tipeModem = new TextEditingController(text:this.modem.tipe);
-    TextEditingController _merkModem = new TextEditingController(text:this.modem.merk);
-    TextEditingController _noSimcard = new TextEditingController(text:this.simCard.noSIM);
     return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -24,7 +20,7 @@ class FormModem extends StatelessWidget {
                       children: <Widget>[
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _merkModem,
+                          initialValue: this.modem.merk,
                           decoration: InputDecoration(
                             labelText: 'Merk Modem',
                           ),
@@ -39,7 +35,7 @@ class FormModem extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _tipeModem,
+                          initialValue: this.modem.tipe,
                           decoration: InputDecoration(
                             labelText: 'Type Modem',
                           ),
@@ -54,7 +50,7 @@ class FormModem extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _noImei,
+                          initialValue: this.modem.noIMEI,
                           decoration: InputDecoration(
                             labelText: 'No. Imei ',
                           ),
@@ -69,7 +65,7 @@ class FormModem extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
-                          controller: _noSimcard,
+                          initialValue: this.simCard.noSIM,
                           decoration: InputDecoration(
                             labelText: 'No. SIM Card ',
                           ),

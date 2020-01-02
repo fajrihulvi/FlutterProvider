@@ -18,8 +18,8 @@ class PemasanganKeduaModel extends BaseModel{
   var result = new Map<String,dynamic>();
   Future getData(String token, String hasilPemeriksaanID)async{
     setState(ViewState.Busy);
-    hasilPemeriksaan = await _hasilPemeriksaanApi.getHasilPemeriksaan(token, "Pasang Baru");
-    tindakLanjut = await _tindakLanjutApi.getTindakLanjut(token, "Tindak Lanjut Pasang Baru");
+    hasilPemeriksaan = await _hasilPemeriksaanApi.getHasilPemeriksaan(token, "Pasang Baru",hasilPemeriksaanID);
+    tindakLanjut = await _tindakLanjutApi.getTindakLanjut(token, "Tindak Lanjut Pasang Baru",hasilPemeriksaanID);
     kodeSegel = await _kodeSegelApi.getKodeSegelByBA(token, hasilPemeriksaanID);
     setState(ViewState.Idle);
   }

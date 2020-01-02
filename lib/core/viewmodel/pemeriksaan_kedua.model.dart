@@ -13,10 +13,10 @@ class PemeriksaanKeduaModel extends BaseModel{
   TindakLanjutApi _tindakLanjutApi = locator<TindakLanjutApi>();
   List<TindakLanjut> tindakLanjut;
   var result = new Map<String,dynamic>();
-  Future getPemeliharaan(String token)async{
+  Future getPemeliharaan(String token,String beritaAcaraID)async{
     setState(ViewState.Busy);
-    hasilPemeriksaan = await _hasilPemeriksaanApi.getHasilPemeriksaan(token, "Hasil Pemeliharaan");
-    tindakLanjut = await _tindakLanjutApi.getTindakLanjut(token, "Tindak Lanjut Pemeliharaan");
+    hasilPemeriksaan = await _hasilPemeriksaanApi.getHasilPemeriksaan(token, "Hasil Pemeliharaan",beritaAcaraID);
+    tindakLanjut = await _tindakLanjutApi.getTindakLanjut(token, "Tindak Lanjut Pemeliharaan",beritaAcaraID);
     setState(ViewState.Idle);
   }
   Future<Map<String,dynamic>> insert(String token, int beritaAcara,

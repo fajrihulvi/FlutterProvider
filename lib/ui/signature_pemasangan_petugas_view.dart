@@ -122,7 +122,7 @@ color: cBgColor,
                 color: primaryColor2,
                 child: Text('Simpan'),
                 onPressed: (){
-                  Navigator.push(context, CupertinoPageRoute(builder: (context)=> HomeDashboard()));
+                  Navigator.pushNamed(context,'/');
                 }),
           )
         ],
