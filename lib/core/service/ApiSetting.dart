@@ -5,6 +5,6 @@ class ApiSetting{
   String get _postfix => postfix;
   ApiSetting.initial()
   :
-  host = "http://192.168.43.85",
-  postfix = "/amr";
+  host = "http://harkomar.com",
+  postfix = "/amr-api";
 }
