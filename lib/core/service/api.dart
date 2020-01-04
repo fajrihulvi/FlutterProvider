@@ -31,6 +31,40 @@ class Api {
     }
     return User.fromMap(json.decode(response.body));
   }
+  Future<User> me(String token) async{
+    var _url = apiSetting.host+apiSetting.postfix+"/auth/me";
+    print("URL : {$_url}");
+    var response = await http.get(_url,
+      headers: {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+    });
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+      return null;
+    }
+    var map = json.decode(response.body);
+    return User.fromMap(map);
+  }
+  Future<bool> logout(String token) async{
+    var _url = apiSetting.host+apiSetting.postfix+"/auth/logout";
+    print("Token : {$token}");
+    var response = await http.get(_url,
+      headers: {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+    });
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+      return null;
+    }
+    var map = json.decode(response.body);
+    return map['success'];
+  }
   Future<List<WorkOrder>> getWorkOrder(String token, int limit) async{
     print("Get Work Order");
     print("Token : $token");
@@ -150,5 +184,24 @@ class Api {
       pelanggan.add(Berita_Acara.fromWorkOrder(beritaAcara));
     }
     return pelanggan;
+  }
+  Future<Map<String,dynamic>> changePassword(String token,String password,String oldPassword) async{
+    var _url = apiSetting.host+apiSetting.postfix+"/user/password";
+    print("URL : {$_url}");
+    var response = await http.post(_url,
+      headers: {
+      "Authorization" : token,
+    },
+    body:{
+      "old_password":oldPassword,
+      "password":password
+    });
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+       return json.decode(response.body);
+    }
+    return json.decode(response.body);
   }
 }

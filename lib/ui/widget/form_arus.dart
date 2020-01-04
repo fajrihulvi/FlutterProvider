@@ -7,7 +7,8 @@ class FormArus extends StatelessWidget {
   final TextEditingController lt;
   final int pemeriksaanID;
   final Arus arus;
-  FormArus({this.lr,this.ls,this.lt,this.pemeriksaanID,this.arus});
+  final bool enableEdit;
+  FormArus({this.lr,this.ls,this.lt,this.pemeriksaanID,this.arus,this.enableEdit=true});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -16,7 +17,7 @@ class FormArus extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextFormField(
-                          enabled: true,
+                          enabled: this.enableEdit,
                           initialValue: this.arus.lr,
                           keyboardType: TextInputType.text,
                           validator: (value){
@@ -32,7 +33,7 @@ class FormArus extends StatelessWidget {
                         ),
                         TextFormField(
                           initialValue: this.arus.ls,
-                          enabled: true,
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
@@ -47,7 +48,7 @@ class FormArus extends StatelessWidget {
                           ),
                         ),
                         TextFormField(
-                          enabled: true,
+                          enabled: this.enableEdit,
                           initialValue: this.arus.lt,
                           keyboardType: TextInputType.text,
                           validator: (value){

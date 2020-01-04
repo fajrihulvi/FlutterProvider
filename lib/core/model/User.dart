@@ -35,6 +35,16 @@ class User {
     this.work_order_id = obj['user']['work_order_id'];
     this.isLogin = obj['user']['token'] == null ? false :true;
     }
+  User.fromDB(Map<String,dynamic> obj){
+    this.id = obj['id'];
+    this.username = obj['username'];
+    this.token = obj['token'];
+    this.no_telp = obj['no_telp'];
+    this.full_name = obj['full_name'];
+    this.email = obj['email'];
+    this.work_order_id = obj['work_order_id'];
+    this.isLogin = obj['token'] == null ? false :true;
+    }
     Map<String, dynamic> toMap(){
       var obj = new Map<String, dynamic>();
       obj['id'] = this.id;

@@ -22,8 +22,8 @@ import 'package:provider/provider.dart';
 class PemasanganPelangganKeduaScreen extends StatefulWidget {
   final Berita_Acara beritaAcara;
   final Map<String,dynamic> result;
-
-  const PemasanganPelangganKeduaScreen({this.beritaAcara,this.result});
+  final bool enableForm;
+  const PemasanganPelangganKeduaScreen({this.beritaAcara,this.result,this.enableForm=true});
 
   @override
   _PemasanganPelangganKeduaScreenState createState() => _PemasanganPelangganKeduaScreenState();
@@ -140,7 +140,7 @@ class _PemasanganPelangganKeduaScreenState extends State<PemasanganPelangganKedu
         color: primaryColor2,
             onPressed: (){
               return this.insert(model);
-             },
+                  },
                         child: Text('Selanjutnya'),
 
                       )
@@ -162,15 +162,17 @@ class _PemasanganPelangganKeduaScreenState extends State<PemasanganPelangganKedu
             hasilPemeriksaan: hp,
             isChecked: hp.check == null || hp.check == 0 ? false : true,
             onTap: (bool isCheck){
-              if(isCheck == true){
-                setState(() {
-                  hp.check = 1;
-                });
-              }
-              else{
-                setState(() {
-                  hp.check = 0;
-                });
+              if(this.widget.enableForm){
+                if(isCheck == true){
+                  setState(() {
+                    hp.check = 1;
+                  });
+                }
+                else{
+                  setState(() {
+                    hp.check = 0;
+                  });
+                }
               }
             }
           )
@@ -185,15 +187,17 @@ class _PemasanganPelangganKeduaScreenState extends State<PemasanganPelangganKedu
             tindakLanjut: tl,
             isChecked: tl.check == null || tl.check == 0 ? false : true,
             onTap: (bool isCheck){
-              if(isCheck == true){
-                setState(() {
-                  tl.check = 1;
-                });
-              }
-              else{
-                setState(() {
-                  tl.check = 0;
-                });
+              if(this.widget.enableForm){
+                if(isCheck == true){
+                  setState(() {
+                    tl.check = 1;
+                  });
+                }
+                else{
+                  setState(() {
+                    tl.check = 0;
+                  });
+                }
               }
             }
           )
@@ -331,7 +335,8 @@ class _PemasanganPelangganKeduaScreenState extends State<PemasanganPelangganKedu
                 );
   }
   void insert(PemasanganKeduaModel model)async{
-    if(this.formKodesegel.currentState.validate()){
+    if(this.widget.enableForm){
+      if(this.formKodesegel.currentState.validate()){
       var map = Map<String,dynamic>();
       map['hasil_pemeriksaan_id'] = this.widget.beritaAcara.id.toString();
       map['boxapp_sebelum']= this.boxAppSblm.text;
@@ -392,6 +397,10 @@ class _PemasanganPelangganKeduaScreenState extends State<PemasanganPelangganKedu
                      Navigator.pushNamed(context, '/signaturePelanggan',arguments: widget.beritaAcara);
               }
       );
+      }
+    }
+    else{
+      Navigator.pushNamed(context, '/');
     }
           
   }

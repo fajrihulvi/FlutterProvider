@@ -59,24 +59,26 @@ class _HistoryScreenState extends State<HistoryScreen>
 
         children: <Widget>[
           ///pemeriksaan AMR
-           Padding(
+           Container(
             padding: const EdgeInsets.all(8.0),
             child: BaseView<HistoryModel>(
               onModelReady: (model)=>model.getberitaAcara(Provider.of<User>(context).token, "Hasil Pemeliharaan"),
               builder: (context,model,child)=>
-              Column(
+              ListView(
+                scrollDirection: Axis.vertical,
                 children: this.historyCard(model.beritaAcara,"Hasil Pemeliharaan")
               ),
             )
           ),
 
           ///Pemasangan AMR
-          Padding(
+          Container(
             padding: const EdgeInsets.all(8.0),
             child: BaseView<HistoryModel>(
               onModelReady: (model)=>model.getberitaAcara(Provider.of<User>(context).token, "Pasang Baru"),
               builder: (context,model,child)=>
-              Column(
+              ListView(
+                scrollDirection: Axis.vertical,
                 children: this.historyCard(model.beritaAcara,"Pasang Baru")
               ),
             )
@@ -99,44 +101,62 @@ class _HistoryScreenState extends State<HistoryScreen>
   }
   Widget card(Berita_Acara beritaAcara,String jenisPemeliharaan){
     return Card(
-                  child:
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('5 November 2019',style: TextStyle(color: textColor,fontSize: 16),),
-                        ListTile(
-                          title: AutoSizeText(beritaAcara.namaPelanggan),
-                          subtitle: AutoSizeText('ID Pel : '+beritaAcara.noPelanggan.toString()),
-                          trailing: Column(
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width/3.5,
-                                child:
-                                MaterialButton(
-                                    minWidth: 100,
-                                    color: beritaAcara.ttdPelanggan == 0 || beritaAcara.ttdPetugas == 0 ? Colors.red : primaryColor2,
-                                    child: Text(
-                                      beritaAcara.ttdPelanggan == 0 || beritaAcara.ttdPetugas == 0 ? "Belum Selesai" : "Sudah Selesai",
-                                      style: TextStyle(color: colorWhite,fontSize: 11),),
-                                    onPressed: (){
-                                      if(beritaAcara.ttdPetugas == 0 || beritaAcara.ttdPelanggan == 0){
-                                        if(jenisPemeliharaan=="Hasil Pemeliharaan"){
-                                          Navigator.pushNamed(context, '/detail_pemeriksaan/first',arguments: beritaAcara);
-                                        }
-                                        if(jenisPemeliharaan=="Pasang Baru"){
-                                          Navigator.pushNamed(context, '/detail_pemasangan/first',arguments: beritaAcara);
-                                        }
-                                      }
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 12),
+                Text("Tanggal",style: TextStyle(color: primaryColor1b,fontSize: 12)),
+                SizedBox(height: 20),
+                Text(beritaAcara.namaPelanggan,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                SizedBox(height: 8),
+                Text("ID : "+beritaAcara.noPelanggan,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(width: 130, child:MaterialButton(
+                  color: beritaAcara.ttdPelanggan == 0 || beritaAcara.ttdPetugas == 0 ? primaryColor3 : primaryColor4,
+                  onPressed: (){
+                    if(beritaAcara.ttdPelanggan == 0 || beritaAcara.ttdPetugas==0){
+                      if(jenisPemeliharaan == "Pasang Baru"){
+                        Navigator.pushNamed(context, '/detail_pemasangan/first',arguments: beritaAcara);
+                      }
+                      else if(jenisPemeliharaan == "Hasil Pemeliharaan"){
+                        Navigator.pushNamed(context, '/detail_pemeriksaan/first',arguments: beritaAcara);
+                      }
+                    }
+                  },
+                  child: Text( 
+                    beritaAcara.ttdPelanggan == 0 || beritaAcara.ttdPetugas == 0 ? "Belum Selesai" : "Sudah Selesai"
+                    ,style: TextStyle(color: Colors.white),),
+                ),),
+                SizedBox(height: 8),
+                beritaAcara.ttdPelanggan == 0 || beritaAcara.ttdPetugas == 0 ? null :
+                SizedBox(width: 130,child: MaterialButton(
+                  color: primaryColor2,
+                  onPressed: (){
+                    if(jenisPemeliharaan == "Pasang Baru"){
+                      Navigator.pushNamed(context, '/view/detail_pemasangan/first',arguments: beritaAcara);
+                    }
+                    else if(jenisPemeliharaan == "Hasil Pemeliharaan"){
+                      Navigator.pushNamed(context, '/view/detail_pemeriksaan/first',arguments: beritaAcara);
+                    }
+                  },
+                  child: Text("Lihat Detail", style: TextStyle(color: Colors.white),),
+                ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

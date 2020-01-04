@@ -7,7 +7,8 @@ class FormStandMeter extends StatelessWidget {
   final TextEditingController kvarh;
   final int pemeriksaanID;
   final StandMeter standMeter;
-  FormStandMeter({this.lwbp,this.wbp,this.kvarh,this.pemeriksaanID,this.standMeter});
+  final bool enableEdit;
+  FormStandMeter({this.lwbp,this.wbp,this.kvarh,this.pemeriksaanID,this.standMeter,this.enableEdit=true});
   @override
   Widget build(BuildContext context) {
     TextEditingController _lwbp = new TextEditingController(text:this.standMeter.lwbp);
@@ -19,7 +20,7 @@ class FormStandMeter extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextFormField(
-                          enabled: true,
+                          enabled: this.enableEdit,
                           controller: _lwbp,
                           keyboardType: TextInputType.text,
                           validator: (value){
@@ -36,7 +37,7 @@ class FormStandMeter extends StatelessWidget {
                         ),
                         TextFormField(
                           controller: _wbp,
-                          enabled: true,
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
@@ -51,7 +52,7 @@ class FormStandMeter extends StatelessWidget {
                           ),
                         ),
                         TextFormField(
-                          enabled: true,
+                          enabled: this.enableEdit,
                           controller: _kvarh,
                           keyboardType: TextInputType.text,
                           validator: (value){

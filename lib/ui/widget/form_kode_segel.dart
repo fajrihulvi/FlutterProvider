@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class FormKodeSegel extends StatelessWidget {
   final Function onChange;
   final TextEditingController boxAppSblm,boxAppSsdh,kwhSblm,kwhSsdh,pembatasSblm,pembatasSsdh;
-  const FormKodeSegel({this.onChange, this.boxAppSblm, this.boxAppSsdh, this.kwhSblm, this.kwhSsdh, this.pembatasSblm, this.pembatasSsdh});
+  final bool enableEdit;
+  const FormKodeSegel({this.onChange, this.boxAppSblm, this.boxAppSsdh, this.kwhSblm, this.kwhSsdh, this.pembatasSblm, this.pembatasSsdh,this.enableEdit=true});
   
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class FormKodeSegel extends StatelessWidget {
                       children: <Widget>[
                         Text('Box App',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sebelum Pemeriksan',
@@ -24,6 +26,7 @@ class FormKodeSegel extends StatelessWidget {
                           onChanged: this.onChange
                         ),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sesudah Pemeriksan',
@@ -34,6 +37,7 @@ class FormKodeSegel extends StatelessWidget {
                         SizedBox(height: 20,),
                         Text('KWH Meter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sebelum Pemeriksan',
@@ -42,6 +46,7 @@ class FormKodeSegel extends StatelessWidget {
                           onChanged: this.onChange,
                         ),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sesudah Pemeriksan',
@@ -52,6 +57,7 @@ class FormKodeSegel extends StatelessWidget {
                         SizedBox(height: 20,),
                         Text('Pembatas',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sebelum Pemeriksan',
@@ -60,6 +66,7 @@ class FormKodeSegel extends StatelessWidget {
                           onChanged: this.onChange,
                         ),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sesudah Pemeriksan',

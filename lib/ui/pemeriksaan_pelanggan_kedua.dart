@@ -22,8 +22,9 @@ class PemeriksaanPelangganKeduaScreen extends StatefulWidget {
   final int baID;
   final Berita_Acara beritaAcara;
   final Map<String,dynamic> result;
+  final bool enableForm;
 
-  const PemeriksaanPelangganKeduaScreen({this.pelangganID, this.baID,this.beritaAcara,this.result});
+  const PemeriksaanPelangganKeduaScreen({this.pelangganID, this.baID,this.beritaAcara,this.result,this.enableForm=true});
   
   @override
   _PemeriksaanPelangganKeduaScreenState createState() => _PemeriksaanPelangganKeduaScreenState();
@@ -120,53 +121,59 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
                   RaisedButton(
                     color: primaryColor2,
                     onPressed: () async{
-                      var tindakLanjutId = new List();
-                      var tindakLanjutCheck = new List();
-                      var modem_id = new List();
-                      var sim_card_id = new List();
-                      var meter_id = new List();
-                      for(var a in model.tindakLanjut){
-                        tindakLanjutId.add(a.id);
-                        tindakLanjutCheck.add(a.check);
-                        modem_id.add(int.parse(this.widget.result['modem_id']));
-                        meter_id.add(int.parse(this.widget.result['meter_id']));
-                        sim_card_id.add(int.parse(this.widget.result['card_id']));
-                      }
-                      var hasilPemeriksaanId = List();
-                      var hasilPemeriksaanCheck = List();
-                      for(var a in model.hasilPemeriksaan){
-                        hasilPemeriksaanId.add(a.id);
-                        hasilPemeriksaanCheck.add(a.check);
-                      }
-                      var result = await model.insert(Provider.of<User>(context).token ,this.widget.baID, 
-                      hasilPemeriksaanId,hasilPemeriksaanCheck,
-                      tindakLanjutId,tindakLanjutCheck,
-                      modem_id,meter_id,sim_card_id
-                      );
-                      if(result['success']==true){
-                        print(result['msg']);
-                        _scaffoldKey.currentState.showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.green,
-                                  duration: Duration(
-                                  seconds: 1
-                                ),
-                                  content: Text(result['msg']))
-                                );
-                                Timer(
-                                  Duration(
-                                    seconds: 3,
-                                  ),(){
-                                    Navigator.pushNamed(
-                                context, '/detail_pemeriksaan/third',arguments: widget.beritaAcara);
-                                  }
-                                );
+                      if(this.widget.enableForm){
+                        var tindakLanjutId = new List();
+                        var tindakLanjutCheck = new List();
+                        var modem_id = new List();
+                        var sim_card_id = new List();
+                        var meter_id = new List();
+                        for(var a in model.tindakLanjut){
+                          tindakLanjutId.add(a.id);
+                          tindakLanjutCheck.add(a.check);
+                          modem_id.add(int.parse(this.widget.result['modem_id']));
+                          meter_id.add(int.parse(this.widget.result['meter_id']));
+                          sim_card_id.add(int.parse(this.widget.result['card_id']));
+                        }
+                        var hasilPemeriksaanId = List();
+                        var hasilPemeriksaanCheck = List();
+                        for(var a in model.hasilPemeriksaan){
+                          hasilPemeriksaanId.add(a.id);
+                          hasilPemeriksaanCheck.add(a.check);
+                        }
+                        var result = await model.insert(Provider.of<User>(context).token ,this.widget.baID, 
+                        hasilPemeriksaanId,hasilPemeriksaanCheck,
+                        tindakLanjutId,tindakLanjutCheck,
+                        modem_id,meter_id,sim_card_id
+                        );
+                        if(result['success']==true){
+                          print(result['msg']);
+                          _scaffoldKey.currentState.showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(
+                                    seconds: 1
+                                  ),
+                                    content: Text(result['msg']))
+                                  );
+                                  Timer(
+                                    Duration(
+                                      seconds: 3,
+                                    ),(){
+                                      Navigator.pushNamed(
+                                  context, '/detail_pemeriksaan/third',arguments: widget.beritaAcara);
+                                    }
+                                  );
+                        }
+                        else{
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 1),
+                                  content: Text(result['msg'])));
+                        }
                       }
                       else{
-                         _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                duration: Duration(seconds: 1),
-                                content: Text(result['msg'])));
+                        Navigator.pushNamed(
+                                  context, '/view/detail_pemeriksaan/third',arguments: widget.beritaAcara);
                       }
                     },
                     child: Text('Selanjutnya'),
@@ -188,15 +195,17 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
             hasilPemeriksaan: hp,
             isChecked: hp.check == null || hp.check == 0 ? false : true,
             onTap: (bool isCheck){
-              if(isCheck == true){
-                setState(() {
-                  hp.check = 1;
-                });
-              }
-              else{
-                setState(() {
-                  hp.check = 0;
-                });
+              if(this.widget.enableForm){
+                if(isCheck == true){
+                  setState(() {
+                    hp.check = 1;
+                  });
+                }
+                else{
+                  setState(() {
+                    hp.check = 0;
+                  });
+                }
               }
             }
           )
@@ -211,16 +220,18 @@ class _PemeriksaanPelangganKeduaScreenState extends State<PemeriksaanPelangganKe
             tindakLanjut: tl,
             isChecked: tl.check == null || tl.check == 0 ? false : true,
             onTap: (bool isCheck){
-              if(isCheck == true){
-                setState(() {
-                  tl.check = 1;
-                });
-              }
-              else{
-                setState(() {
-                  tl.check = 0;
-                });
-              }
+              if(this.widget.enableForm){
+                    if(isCheck == true){
+                    setState(() {
+                      tl.check = 1;
+                    });
+                  }
+                  else{
+                    setState(() {
+                      tl.check = 0;
+                    });
+                  }
+                }
             }
           )
         );

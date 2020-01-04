@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 
 class PemeriksaanPelangganKetigaScreen extends StatefulWidget {
   final Berita_Acara beritaAcara;
-
-  const PemeriksaanPelangganKetigaScreen({Key key, this.beritaAcara}) : super(key: key);
+  final bool enableForm;
+  const PemeriksaanPelangganKetigaScreen({Key key, this.beritaAcara,this.enableForm=true}) : super(key: key);
   
   @override
   _PemeriksaanPelangganKetigaScreenState createState() => _PemeriksaanPelangganKetigaScreenState();
@@ -103,46 +103,51 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                     RaisedButton(
                       color: primaryColor2,
                       onPressed: ()async{
-                        if(this.formKodesegel.currentState.validate()){
-                          var map = Map<String,dynamic>();
-                          map['hasil_pemeriksaan_id'] = this.widget.beritaAcara.id.toString();
-                          map['boxapp_sebelum']= this.boxAppSblm.text;
-                          map['boxapp_sesudah']= this.boxAppSsdh.text;
-                          map['kwh_sebelum']= this.kwhSblm.text;
-                          map['kwh_sesudah']= this.kwhSsdh.text;
-                          map['pembatas_sebelum']= this.pembatasSblm.text;
-                          map['pembatas_sesudah']= this.pembatasSsdh.text;
-                          print(map);
-                          var result = await model.insert(Provider.of<User>(context).token, map);
-                          if(result['success']==true){
-                              print(result['msg']);
-                              _scaffoldKey.currentState.showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: Colors.green,
-                                        duration: Duration(
-                                        seconds: 1
-                                      ),
-                                        content: Text(result['msg']))
-                                      );
-                                      Timer(
-                                        Duration(
-                                          seconds: 3,
-                                        ),(){
-                                          Navigator.pushNamed(
-                                      context, '/signaturePelanggan',arguments: widget.beritaAcara);
-                                        }
-                                      );
-                            }
-                            else{
-                              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                      backgroundColor: Colors.red,
-                                      duration: Duration(seconds: 1),
-                                      content: Text(result['msg'])));
-                            }
+                        if(this.widget.enableForm){
+                          if(this.formKodesegel.currentState.validate()){
+                            var map = Map<String,dynamic>();
+                            map['hasil_pemeriksaan_id'] = this.widget.beritaAcara.id.toString();
+                            map['boxapp_sebelum']= this.boxAppSblm.text;
+                            map['boxapp_sesudah']= this.boxAppSsdh.text;
+                            map['kwh_sebelum']= this.kwhSblm.text;
+                            map['kwh_sesudah']= this.kwhSsdh.text;
+                            map['pembatas_sebelum']= this.pembatasSblm.text;
+                            map['pembatas_sesudah']= this.pembatasSsdh.text;
+                            print(map);
+                            var result = await model.insert(Provider.of<User>(context).token, map);
+                            if(result['success']==true){
+                                print(result['msg']);
+                                _scaffoldKey.currentState.showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Colors.green,
+                                          duration: Duration(
+                                          seconds: 1
+                                        ),
+                                          content: Text(result['msg']))
+                                        );
+                                        Timer(
+                                          Duration(
+                                            seconds: 3,
+                                          ),(){
+                                            Navigator.pushNamed(
+                                        context, '/signaturePelanggan',arguments: widget.beritaAcara);
+                                          }
+                                        );
+                              }
+                              else{
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                        backgroundColor: Colors.red,
+                                        duration: Duration(seconds: 1),
+                                        content: Text(result['msg'])));
+                              }
+                          }
+                        }
+                        else{
+                           Navigator.pushNamed(
+                                        context, '/');
                         }
                       },
                       child: Text('Selanjutnya'),
-
                     )
                   ],
                 )
@@ -172,6 +177,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                       children: <Widget>[
                         Text('Box App',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                         TextFormField(
+                          enabled: this.widget.enableForm,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sebelum Pemeriksan',
@@ -189,6 +195,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                           },
                         ),
                         TextFormField(
+                          enabled: this.widget.enableForm,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sesudah Pemeriksan',
@@ -208,6 +215,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                         SizedBox(height: 20,),
                         Text('KWH Meter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                         TextFormField(
+                          enabled: this.widget.enableForm,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sebelum Pemeriksan',
@@ -225,6 +233,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                           },
                         ),
                         TextFormField(
+                          enabled: this.widget.enableForm,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sesudah Pemeriksan',
@@ -244,6 +253,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                         SizedBox(height: 20,),
                         Text('Pembatas',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                         TextFormField(
+                          enabled: this.widget.enableForm,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sebelum Pemeriksan',
@@ -261,6 +271,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                           },
                         ),
                         TextFormField(
+                          enabled: this.widget.enableForm,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: 'Sesudah Pemeriksan',

@@ -13,6 +13,7 @@ import 'package:amr_apps/core/viewmodel/pemasangan_kedua_model.dart';
 import 'package:amr_apps/core/viewmodel/pemeriksaan_kedua.model.dart';
 import 'package:amr_apps/core/viewmodel/signature_model.dart';
 import 'package:amr_apps/core/viewmodel/sim_card_model.dart';
+import 'package:amr_apps/core/viewmodel/ubah_password_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:amr_apps/core/service/api.dart';
 import 'package:amr_apps/core/viewmodel/login_model.dart';
@@ -42,7 +43,7 @@ void setupLocator() {
  locator.registerLazySingleton(() => TindakLanjutApi());
  locator.registerLazySingleton(() => KodeSegelApi());
  locator.registerLazySingleton(()=>AuthService());
- locator.registerLazySingleton(()=>LoginModel());
+ locator.registerFactory(()=>LoginModel());
  locator.registerFactory(()=>HomeModel());
  locator.registerFactory(()=>DetailPemeriksaanModel());
  locator.registerFactory(()=>DetailPemasanganModel());
@@ -60,4 +61,5 @@ void setupLocator() {
  locator.registerFactory(()=>SignatureModel());
  locator.registerFactory(()=>HistoryModel());
  locator.registerFactory(()=>CariMemberModel());
+ locator.registerFactory(()=>UbahPasswordModel());
 }

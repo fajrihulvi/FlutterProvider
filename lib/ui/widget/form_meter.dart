@@ -8,7 +8,8 @@ class FormMeter extends StatelessWidget {
   final TextEditingController noSeri;
   final int pelangganID;
   final Meter meter;
-  FormMeter({this.merkMeter,this.tipeMeter,this.noSeri,this.pelangganID,this.meter});
+  final bool enableEdit;
+  FormMeter({this.merkMeter,this.tipeMeter,this.noSeri,this.pelangganID,this.meter,this.enableEdit=true});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -17,6 +18,7 @@ class FormMeter extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           initialValue: this.meter.merk,
                           decoration: InputDecoration(
@@ -32,6 +34,7 @@ class FormMeter extends StatelessWidget {
                           },
                         ),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           initialValue: this.meter.tipe,
                           decoration: InputDecoration(
@@ -47,6 +50,7 @@ class FormMeter extends StatelessWidget {
                           },
                         ),
                         TextFormField(
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           initialValue: this.meter.noSERI,
                           decoration: InputDecoration(

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:amr_apps/ui/auth_screen.dart';
 import 'package:amr_apps/ui/cari_member_pasang_baru_screen.dart';
 import 'package:amr_apps/ui/cari_member_pemeriksaan_screen.dart';
 import 'package:amr_apps/ui/detail_wo_pemasangan_screen.dart';
@@ -17,6 +18,7 @@ import 'package:amr_apps/ui/signature_pemasangan_pelanggan_view.dart';
 import 'package:amr_apps/ui/signature_pemasangan_petugas_view.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_pelanggan_view.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_petugas_view.dart';
+import 'package:amr_apps/ui/ubah_password.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
@@ -29,6 +31,9 @@ class Router{
       case '/' :
         print("Load Home Screen");
         return MaterialPageRoute(builder: (_)=>HomeDashboard());
+      case 'auth' :
+        print("Load Auth Screen");
+        return MaterialPageRoute(builder: (_)=>AuthScreen());
       case 'login':
         return MaterialPageRoute(builder: (_)=>LoginScreen());
       case '/detail_pemeriksaan':
@@ -46,24 +51,49 @@ class Router{
           pelangganID: ba.pelangganID,
           beritaAcara: ba,
         ));
+      case '/view/detail_pemasangan/first':
+        var ba = settings.arguments as Berita_Acara;
+        return MaterialPageRoute(builder: (_)=>PemasanganPelangganPertamaScreen(
+          pemeriksaanID: ba.id,
+          pelangganID: ba.pelangganID,
+          beritaAcara: ba,
+          enableForm: false,
+        ));
       case '/detail_pemasangan/second':
         var data = settings.arguments as Map<String,dynamic>;
         var ba = data['berita_acara'] as Berita_Acara;
         var result = data['result'];
         return MaterialPageRoute(builder: (_)=>PemasanganPelangganKeduaScreen(beritaAcara:ba,result: result));
+      case '/view/detail_pemasangan/second':
+        var data = settings.arguments as Map<String,dynamic>;
+        var ba = data['berita_acara'] as Berita_Acara;
+        var result = data['result'];
+        return MaterialPageRoute(builder: (_)=>PemasanganPelangganKeduaScreen(beritaAcara:ba,result: result,enableForm: false));
       case '/detail_pemeriksaan/first':
         var ba = settings.arguments as Berita_Acara;
         return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba));
+      case '/view/detail_pemeriksaan/first':
+        var ba = settings.arguments as Berita_Acara;
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba,enableForm: false));
       case '/detail_pemeriksaan/second':
         var data = settings.arguments as Map<String,dynamic>;
         var ba = data['berita_acara'] as Berita_Acara;
         var result = data['result'];
         print("Result : "+result.toString());
         return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(baID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba,result: result));
+      case '/view/detail_pemeriksaan/second':
+        var data = settings.arguments as Map<String,dynamic>;
+        var ba = data['berita_acara'] as Berita_Acara;
+        var enableForm = data['enableForm'];
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(baID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba,enableForm:enableForm));
       case '/detail_pemeriksaan/third':
         var ba = settings.arguments as Berita_Acara;
         print(ba);
         return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKetigaScreen(beritaAcara: ba));
+      case '/view/detail_pemeriksaan/third':
+        var ba = settings.arguments as Berita_Acara;
+        print(ba);
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKetigaScreen(beritaAcara: ba,enableForm: false));
       case '/signaturePelanggan':
         var ba = settings.arguments as Berita_Acara;
         return MaterialPageRoute(builder: (_)=>SignatureView(beritaacara: ba));
@@ -79,6 +109,8 @@ class Router{
         return MaterialPageRoute(builder: (_)=>CariMemberPemeriksaanScreen());
       case '/history':
         return MaterialPageRoute(builder: (_)=>HistoryScreen());
+      case '/ubah_password':
+        return MaterialPageRoute(builder: (_)=>UbahPassword());
       default :
         return MaterialPageRoute(builder: (_)=>Scaffold(
           body: Center(child: Text("No route defined for ${settings.name}")),

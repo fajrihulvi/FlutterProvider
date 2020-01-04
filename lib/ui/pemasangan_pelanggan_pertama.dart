@@ -26,7 +26,8 @@ class PemasanganPelangganPertamaScreen extends StatefulWidget {
   final int pemeriksaanID;
   final int pelangganID;
   final Berita_Acara beritaAcara;
-  const PemasanganPelangganPertamaScreen({this.pemeriksaanID,this.pelangganID,this.beritaAcara});
+  final bool enableForm;
+  const PemasanganPelangganPertamaScreen({this.pemeriksaanID,this.pelangganID,this.beritaAcara,this.enableForm=true});
   @override
   _PemasanganPelangganPertamaScreenState createState() => _PemasanganPelangganPertamaScreenState();
 }
@@ -120,6 +121,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                     child: FormMeter(
                       tipeMeter: this.tipeMeter,
                       merkMeter: this.merkMeter,
+                      enableEdit: this.widget.enableForm,
                       noSeri: this.noSeri,
                       meter: modelMeter.meter
                     ),
@@ -136,6 +138,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                     child: FormModem(
                       tipeModem: this.tipeModem,
                       merkModem: this.merkModem,
+                      enableEdit: this.widget.enableForm,
                       noImei: this.noImei,
                       noSimcard: this.noSim,
                       modem: modelModem.modem,
@@ -154,6 +157,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                     child: FormStandMeter(
                       lwbp: this.lwbp,
                       wbp: this.wbp,
+                      enableEdit: this.widget.enableForm,
                       kvarh: this.kvarh,
                       pemeriksaanID: modelStandMeter.standMeter.baID,
                       standMeter: modelStandMeter.standMeter,
@@ -170,6 +174,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                     key: this.formTegangan,
                     child: FormTegangan(
                       vr: this.vr,
+                      enableEdit: this.widget.enableForm,
                       vs: this.vs,
                       vt: this.vt,
                       pemeriksaanID: modelTegangan.tegangan.baID,
@@ -187,6 +192,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                     key: this.formArus,
                     child: FormArus(
                       lr: this.lr,
+                      enableEdit: this.widget.enableForm,
                       ls: this.ls,
                       lt: this.lt,
                       pemeriksaanID: modelArus.arus.baID,
@@ -200,7 +206,8 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                     RaisedButton(
                       color: primaryColor2,
                         onPressed: () async{
-                          if(this.formTegangan.currentState.validate()&&this.formArus.currentState.validate()
+                          if(this.widget.enableForm){
+                            if(this.formTegangan.currentState.validate()&&this.formArus.currentState.validate()
                           &&this.formStandMeter.currentState.validate()&&this.formModem.currentState.validate()
                           &&this.formMeter.currentState.validate()){
                             Map<String,dynamic> result = await model.insertAll(Provider.of<User>(context).token, {
@@ -253,7 +260,7 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                                     Navigator.pushNamed(
                                 context, '/detail_pemasangan/second',arguments: {
                                   "berita_acara" : this.widget.beritaAcara,
-                                  "result" : result
+                                  "result" : result,
                                 });
                                   }
                                 );
@@ -265,6 +272,14 @@ class _PemasanganPelangganPertamaScreenState extends State<PemasanganPelangganPe
                                 content: Text(result['msg'])));
                             }
                           }
+                          }else{
+                            Navigator.pushNamed(
+                                context, '/view/detail_pemasangan/second',arguments: {
+                                  "berita_acara" : this.widget.beritaAcara,
+                                  "result" : null,
+                                });
+                          }
+                          
                         },
                       child: Text('Selanjutnya'),
                     

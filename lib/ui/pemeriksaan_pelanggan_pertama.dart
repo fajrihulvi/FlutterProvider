@@ -26,8 +26,13 @@ class PemeriksaanPelangganPertamaScreen extends StatefulWidget {
   final int pemeriksaanID;
   final int pelangganID;
   final Berita_Acara beritaAcara;
+  final bool enableForm;
 
-  const PemeriksaanPelangganPertamaScreen({this.pemeriksaanID,this.pelangganID,this.beritaAcara});
+  const PemeriksaanPelangganPertamaScreen({
+    this.pemeriksaanID,
+    this.pelangganID,
+    this.beritaAcara,
+    this.enableForm=true});
   
   @override
   _PemeriksaanPelangganPertamaScreenState createState() => _PemeriksaanPelangganPertamaScreenState();
@@ -120,6 +125,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                   Form(
                     key: this.formMeter,
                     child: FormMeter(
+                      enableEdit: this.widget.enableForm,
                       tipeMeter: this.tipeMeter,
                       merkMeter: this.merkMeter,
                       noSeri: this.noSeri,
@@ -136,6 +142,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                   Form(
                     key: this.formModem,
                     child: FormModem(
+                      enableEdit: this.widget.enableForm,
                       tipeModem: this.tipeModem,
                       merkModem: this.merkModem,
                       noImei: this.noImei,
@@ -154,6 +161,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                    Form(
                     key: this.formStandMeter,
                     child: FormStandMeter(
+                      enableEdit: this.widget.enableForm,
                       lwbp: this.lwbp,
                       wbp: this.wbp,
                       kvarh: this.kvarh,
@@ -171,6 +179,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                    Form(
                     key: this.formTegangan,
                     child: FormTegangan(
+                      enableEdit: this.widget.enableForm,
                       vr: this.vr,
                       vs: this.vs,
                       vt: this.vt,
@@ -188,6 +197,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                    Form(
                     key: this.formArus,
                     child: FormArus(
+                      enableEdit: this.widget.enableForm,
                       lr: this.lr,
                       ls: this.ls,
                       lt: this.lt,
@@ -202,7 +212,8 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                     RaisedButton(
                       color: primaryColor2,
                         onPressed: () async{
-                          if(this.formTegangan.currentState.validate()&&this.formArus.currentState.validate()
+                          if(this.widget.enableForm){
+                            if(this.formTegangan.currentState.validate()&&this.formArus.currentState.validate()
                           &&this.formStandMeter.currentState.validate()&&this.formModem.currentState.validate()
                           &&this.formMeter.currentState.validate()){
                             Map<String,dynamic> result = await model.insertAll(Provider.of<User>(context).token, {
@@ -264,6 +275,12 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                                 content: Text(result['msg'])));
                             }
                           }
+                          }
+                          else{
+                              Navigator.pushNamed(
+                              context, '/view/detail_pemeriksaan/second',arguments:{ "berita_acara": this.widget.beritaAcara, "result" : null,"enableForm":this.widget.enableForm});
+                          }
+                          
                         },
                       child: Text('Selanjutnya'),
                     

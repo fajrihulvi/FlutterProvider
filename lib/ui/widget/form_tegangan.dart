@@ -7,7 +7,8 @@ class FormTegangan extends StatelessWidget {
   final TextEditingController vt;
   final int pemeriksaanID;
   final Tegangan tegangan;
-  FormTegangan({this.vr,this.vs,this.vt,this.pemeriksaanID,this.tegangan});
+  final bool enableEdit;
+  FormTegangan({this.vr,this.vs,this.vt,this.pemeriksaanID,this.tegangan,this.enableEdit=true});
   @override
   Widget build(BuildContext context) {
     TextEditingController _vr = new TextEditingController(text:this.tegangan.vr);
@@ -19,7 +20,7 @@ class FormTegangan extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextFormField(
-                          enabled: true,
+                          enabled: this.enableEdit,
                           controller: _vr,
                           keyboardType: TextInputType.text,
                           validator: (value){
@@ -36,7 +37,7 @@ class FormTegangan extends StatelessWidget {
                         ),
                         TextFormField(
                           controller: _vs,
-                          enabled: true,
+                          enabled: this.enableEdit,
                           keyboardType: TextInputType.text,
                           validator: (value){
                             if(value.isEmpty){
@@ -51,7 +52,7 @@ class FormTegangan extends StatelessWidget {
                           ),
                         ),
                         TextFormField(
-                          enabled: true,
+                          enabled: this.enableEdit,
                           controller: _vt,
                           keyboardType: TextInputType.text,
                           validator: (value){

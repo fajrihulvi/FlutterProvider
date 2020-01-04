@@ -10,7 +10,8 @@ class FormModem extends StatelessWidget {
   final int pelangganID;
   final Modem modem;
   final SimCard simCard;
-  FormModem({this.merkModem,this.tipeModem,this.noImei,this.noSimcard,this.pelangganID,this.simCard,this.modem});
+  final bool enableEdit;
+  FormModem({this.merkModem,this.tipeModem,this.noImei,this.noSimcard,this.pelangganID,this.simCard,this.modem,this.enableEdit=true});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -20,6 +21,7 @@ class FormModem extends StatelessWidget {
                       children: <Widget>[
                         TextFormField(
                           keyboardType: TextInputType.text,
+                          enabled: this.enableEdit,
                           initialValue: this.modem.merk,
                           decoration: InputDecoration(
                             labelText: 'Merk Modem',
@@ -35,6 +37,7 @@ class FormModem extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
+                          enabled: this.enableEdit,
                           initialValue: this.modem.tipe,
                           decoration: InputDecoration(
                             labelText: 'Type Modem',
@@ -50,6 +53,7 @@ class FormModem extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
+                          enabled: this.enableEdit,
                           initialValue: this.modem.noIMEI,
                           decoration: InputDecoration(
                             labelText: 'No. Imei ',
@@ -65,6 +69,7 @@ class FormModem extends StatelessWidget {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.text,
+                          enabled: this.enableEdit,
                           initialValue: this.simCard.noSIM,
                           decoration: InputDecoration(
                             labelText: 'No. SIM Card ',
