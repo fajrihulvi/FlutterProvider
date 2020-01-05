@@ -1,11 +1,11 @@
-import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:flutter/material.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 
 class PemeriksaanCard extends StatelessWidget {
-  final Berita_Acara beritaAcara;
+  final Pelanggan pelanggan;
   final Function onTap;
-  const PemeriksaanCard({this.beritaAcara,this.onTap});
+  const PemeriksaanCard({this.pelanggan,this.onTap});
   
   @override
 
@@ -34,7 +34,7 @@ class PemeriksaanCard extends StatelessWidget {
                                   color: cBgColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(this.beritaAcara.nomorBA),
+                                    child: Text(this.pelanggan.noBA),
                                   ))),
                         ],
                       ),
@@ -59,7 +59,7 @@ class PemeriksaanCard extends StatelessWidget {
                                   color: cBgColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(this.beritaAcara.noPelanggan),
+                                    child: Text(this.pelanggan.idPel),
                                   ))),
                         ],
                       ),
@@ -84,7 +84,7 @@ class PemeriksaanCard extends StatelessWidget {
                                   color: cBgColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(this.beritaAcara.namaPelanggan),
+                                    child: Text(this.pelanggan.namaPelanggan),
                                   ))),
                         ],
                       ),
@@ -109,7 +109,7 @@ class PemeriksaanCard extends StatelessWidget {
                                   color: cBgColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(this.beritaAcara.alamat),
+                                    child: Text(this.pelanggan.alamat),
                                   ))),
                         ],
                       ),
@@ -134,7 +134,7 @@ class PemeriksaanCard extends StatelessWidget {
                                   color: cBgColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(this.beritaAcara.tarif),
+                                    child: Text(this.pelanggan.tarif),
                                   ))),
                         ],
                       ),

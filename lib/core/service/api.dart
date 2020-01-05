@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/model/WorkOrder.dart';
 import 'package:http/http.dart' as http;
@@ -69,7 +70,7 @@ class Api {
     print("Get Work Order");
     print("Token : $token");
     var workOrder = List<WorkOrder>();
-    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/work_order?"+"&limit="+limit.toString());
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/work_order?"+"limit="+limit.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -84,7 +85,7 @@ class Api {
       return null;
     }
     var map = new Map<String,dynamic>();
-    map = json.decode(response.body);
+    map = json.decode(response.body);  
     if(map['data']==null){
       return null;
     }
@@ -95,11 +96,11 @@ class Api {
     }
     return workOrder;
   }
-  Future<List<Berita_Acara>> getPelangganByWO(String token,String nomorWO) async{
+  Future<List<Pelanggan>> getPelangganByWO(String token,String nomorWO) async{
     print("Get Pelanggan By WO");
     print("Token : $token");
-    var pelanggan = List<Berita_Acara>();
-    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/berita_acara?"+"&nomor_wo="+nomorWO.toString());
+    var pelanggan = List<Pelanggan>();
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/work_order/pelanggan?"+"&nomor_wo="+nomorWO.toString());
     print("URL : $url");
     var response = await http.get(url,
       headers: {
@@ -121,7 +122,7 @@ class Api {
     var parsed = map['data'] as List<dynamic>;
     for (var beritaAcara in parsed) {
       print("WO $beritaAcara");
-      pelanggan.add(Berita_Acara.fromWorkOrder(beritaAcara));
+      pelanggan.add(Pelanggan.fromMap(beritaAcara));
     }
     return pelanggan;
   }

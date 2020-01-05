@@ -1,5 +1,6 @@
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/model/WorkOrder.dart';
 import 'package:amr_apps/core/viewmodel/detail_pemasangan_model.dart';
@@ -76,27 +77,27 @@ class _DetailWoPemasanganScreenState extends State<DetailWoPemasanganScreen> {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
-          children:this.getPemasanganUI(model.beritaAcara)
+          children:this.getPemasanganUI(model.pelanggan)
         ),
       ),
     )
     );
   }
-  List<Widget> getPemasanganUI(List<Berita_Acara> beritaAcara) {
+  List<Widget> getPemasanganUI(List<Pelanggan> pelanggan) {
     var items = new List<Widget>();
     items.add(Text(
               'Data Pelanggan',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
       ));
-    if(beritaAcara == null){
+    if(pelanggan == null){
        items.add(Center(child: Text("Data Tidak Ada")));
     }
     else{ 
-      for (var ba in beritaAcara) {
+      for (var pel in pelanggan) {
         items.add(new PemeriksaanCard(
-            beritaAcara: ba,
+            pelanggan: pel,
             onTap: (){
-              Navigator.pushNamed(context, '/detail_pemasangan/first',arguments: ba);
+              Navigator.pushNamed(context, '/detail_pemasangan/first',arguments: pel);
             }
           )
         );

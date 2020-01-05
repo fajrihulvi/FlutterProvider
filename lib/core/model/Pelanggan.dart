@@ -11,6 +11,7 @@ class Pelanggan{
   String _lat;
   String _long;
   String _status;
+  String _noBA;
   int _meterID;
   int _modemID;
   int _simCardID;
@@ -27,11 +28,12 @@ class Pelanggan{
   int get meterID => _meterID;
   int get modemID => _modemID;
   int get simCardID => _simCardID;
+  String get noBA => _noBA;
   Pelanggan.fromMap(Map<String,dynamic> obj){
     _id = int.parse(obj['id']);
     _idPel = obj['id_pel'];
     _siteID = int.parse(obj['site_id']);
-    _namaPelanggan=obj['nama_pelangggan'];
+    _namaPelanggan = obj['nama_pelanggan'];
     _alamat=obj['alamat'];
     _tarif = obj['tarif'];
     _daya = obj['daya'];
@@ -41,5 +43,7 @@ class Pelanggan{
     _meterID = int.parse( obj['meter_id']);
     _modemID = int.parse( obj['modem_id']);
     _simCardID = int.parse( obj['sim_card_id']);
+    _simCardID = int.parse( obj['sim_card_id']);
+    _noBA = obj['no_ba'] == null ? "" : obj['no_ba'];
   }
 }

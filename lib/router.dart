@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
 import 'core/model/Berita_Acara.dart';
+import 'core/model/Pelanggan.dart';
 import 'core/model/WorkOrder.dart';
 
 class Router{
@@ -45,11 +46,9 @@ class Router{
           workOrder: wo,
         ));
       case '/detail_pemasangan/first':
-        var ba = settings.arguments as Berita_Acara;
+        var  pel= settings.arguments as Pelanggan;
         return MaterialPageRoute(builder: (_)=>PemasanganPelangganPertamaScreen(
-          pemeriksaanID: ba.id,
-          pelangganID: ba.pelangganID,
-          beritaAcara: ba,
+          pelangganID: pel.id,
         ));
       case '/view/detail_pemasangan/first':
         var ba = settings.arguments as Berita_Acara;
@@ -70,8 +69,8 @@ class Router{
         var result = data['result'];
         return MaterialPageRoute(builder: (_)=>PemasanganPelangganKeduaScreen(beritaAcara:ba,result: result,enableForm: false));
       case '/detail_pemeriksaan/first':
-        var ba = settings.arguments as Berita_Acara;
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba));
+        var pel = settings.arguments as Pelanggan;
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pelangganID: pel.id,));
       case '/view/detail_pemeriksaan/first':
         var ba = settings.arguments as Berita_Acara;
         return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(pemeriksaanID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba,enableForm: false));

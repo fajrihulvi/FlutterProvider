@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     else{
       for (var wo in workOrder) {
-        if(wo.jenisPemeliharaan.contains("Pemeliharaan")){
+        if(wo.pemeliharaan.contains("Pemeliharaan")){
           items.add(new WoCard(
             workOrder: wo,
             title: "WO Pemeriksaan",
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     else{
       for (var wo in workOrder) {
-        if(wo.jenisPemeliharaan.contains("Pasang Baru")){
+        if(wo.pemeliharaan.contains("Pasang Baru")){
           items.add(new WoCard(
             workOrder: wo,
             title: "WO Pemasangan Baru",
