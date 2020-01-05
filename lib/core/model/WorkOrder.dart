@@ -5,10 +5,17 @@ class WorkOrder{
   String _jenisPemeliharaan;
   String _pemeliharaan;
   int get id=> _id;
-  String get nomorWO=>_nomorWO;
+  String get nomorWO => _nomorWO;
   String get tanggal=>_tanggal;
   String get jenisPemeliharaan => _jenisPemeliharaan;
   String get pemeliharaan => _pemeliharaan;
+  set nomorWO(String kata){
+    this._nomorWO = kata;
+  }
+
+  set id(int angka){
+    this._id = angka;
+  }
   WorkOrder.fromMap(Map<String,dynamic>obj){
     _id = int.parse(obj['id']);
     _nomorWO = obj['nomor_work_order'];

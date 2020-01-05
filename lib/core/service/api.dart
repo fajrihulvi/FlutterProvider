@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/core/model/Pelanggan.dart';
+import 'package:amr_apps/core/model/Pemeliharaan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/model/WorkOrder.dart';
 import 'package:http/http.dart' as http;
@@ -204,5 +205,30 @@ class Api {
        return json.decode(response.body);
     }
     return json.decode(response.body);
+  }
+  Future<Pemeliharaan> getPemeliharaan(String token,String pemeliharaanID) async{
+    print("Get Pemeliharaan By ID....");
+    print("Token : $token");
+    Pemeliharaan pemeliharaan;
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/pemeliharaan?"+"pemeliharaan_id="+pemeliharaanID.toString()+"&limit=1");
+    print("URL : $url");
+    var response = await http.get(url,
+      headers: {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      }
+    );
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+      return null;
+    }
+    var responseBody =  json.decode(response.body);
+    if(responseBody['pemeliharaan'] == null){
+      return null;
+    }
+    pemeliharaan = new Pemeliharaan.fromMap(responseBody['pemeliharaan']);
+    return pemeliharaan;
   }
 }

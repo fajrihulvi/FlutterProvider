@@ -5,6 +5,7 @@ import 'package:amr_apps/ui/cari_member_pasang_baru_screen.dart';
 import 'package:amr_apps/ui/cari_member_pemeriksaan_screen.dart';
 import 'package:amr_apps/ui/detail_wo_pemasangan_screen.dart';
 import 'package:amr_apps/ui/detail_wo_pemeriksaan_screen.dart';
+import 'package:amr_apps/ui/hasil_pemeriksaan_screen.dart';
 import 'package:amr_apps/ui/history_screen.dart';
 import 'package:amr_apps/ui/home_dashboard.dart';
 import 'package:amr_apps/ui/home_screen.dart';
@@ -18,6 +19,7 @@ import 'package:amr_apps/ui/signature_pemasangan_pelanggan_view.dart';
 import 'package:amr_apps/ui/signature_pemasangan_petugas_view.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_pelanggan_view.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_petugas_view.dart';
+import 'package:amr_apps/ui/tindak_lanjut_screen.dart';
 import 'package:amr_apps/ui/ubah_password.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
@@ -44,6 +46,23 @@ class Router{
         var wo = settings.arguments as WorkOrder;
         return MaterialPageRoute(builder: (_)=>DetailWoPemasanganScreen(
           workOrder: wo,
+        ));
+      case '/hasil_pemeriksaan':
+        var pel = settings.arguments as Pelanggan;
+        return MaterialPageRoute(builder: (_)=>HasilPemeriksaanScreen(
+          enableForm: true,
+          pelangganID: pel.id,
+          pelanggan: pel,
+        ));
+      case '/tindak_lanjut':
+        var map = settings.arguments as Map<String,dynamic>;
+        var pel = map['pelanggan'] as Pelanggan;
+        var hasil_pemeriksaan = map['hasil_pemeriksaan'] as List<dynamic>;
+        return MaterialPageRoute(builder: (_)=>TindakLanjutScreen(
+          enableForm: true,
+          pelanggan: pel,
+          pelangganID: pel.id,
+          hasil_pemeriksaan: hasil_pemeriksaan
         ));
       case '/detail_pemasangan/first':
         var  pel= settings.arguments as Pelanggan;

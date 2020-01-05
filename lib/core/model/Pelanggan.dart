@@ -1,5 +1,7 @@
 import 'dart:ffi';
 
+import 'WorkOrder.dart';
+
 class Pelanggan{
   int _id;
   String _idPel;
@@ -12,9 +14,13 @@ class Pelanggan{
   String _long;
   String _status;
   String _noBA;
+  String _nomorWO;
   int _meterID;
   int _modemID;
   int _simCardID;
+  int _woID;
+  String _pemeliharaaanID;
+  String get pemeliharaanID => _pemeliharaaanID;
   int get id => _id;
   String get idPel => _idPel;
   int get siteID => _siteID;
@@ -29,6 +35,8 @@ class Pelanggan{
   int get modemID => _modemID;
   int get simCardID => _simCardID;
   String get noBA => _noBA;
+  String get nomorWO=>_nomorWO;
+  int get woID => _woID;
   Pelanggan.fromMap(Map<String,dynamic> obj){
     _id = int.parse(obj['id']);
     _idPel = obj['id_pel'];
@@ -45,5 +53,8 @@ class Pelanggan{
     _simCardID = int.parse( obj['sim_card_id']);
     _simCardID = int.parse( obj['sim_card_id']);
     _noBA = obj['no_ba'] == null ? "" : obj['no_ba'];
+    _nomorWO = obj['nomor'];
+    _woID = int.parse(obj['wo_id']);
+    _pemeliharaaanID = obj['pemeliharaan_id'];
   }
 }

@@ -42,7 +42,7 @@ class HasilPemeriksaanApi {
     }
     return hasilpemeriksaan;
   }
-  Future<Map<String,dynamic>> insertHasilPemeriksaan(String token,int beritaAcara, List pemeliharaanID,List check) async{
+  Future<Map<String,dynamic>> insertHasilPemeriksaan(String token,String beritaAcara, List pemeliharaanID,List check) async{
     print("Insert Hasil Pemeriksaan....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
@@ -51,7 +51,7 @@ class HasilPemeriksaanApi {
     var body = new Map<String,dynamic>();
     body["check"] = json.encode(check);
     body["pemeliharaan_id"] = json.encode(pemeliharaanID);
-    body["berita_acara_id"] = beritaAcara.toString();
+    body["berita_acara_id"] = beritaAcara;
     print(body);
     var response = await http.post(url,headers: {"Authorization" : token,
       "Accept":"application/json"},body:body);

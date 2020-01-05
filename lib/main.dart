@@ -1,5 +1,4 @@
 import 'package:amr_apps/core/service/auth_service.dart';
-import 'package:amr_apps/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/model/User.dart';

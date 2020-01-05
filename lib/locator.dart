@@ -24,12 +24,14 @@ import 'core/service/auth_service.dart';
 import 'core/viewmodel/arus_model.dart';
 import 'core/viewmodel/cari_member_model.dart';
 import 'core/viewmodel/detail_pemeriksaan_model.dart';
+import 'core/viewmodel/hasil_pemeriksaan_model.dart';
 import 'core/viewmodel/home_model.dart';
 import 'core/viewmodel/pemasangan_pertama_model.dart';
 import 'core/viewmodel/pemeriksaan_ketiga_model.dart';
 import 'core/viewmodel/pemeriksaan_pertama_model.dart';
 import 'core/viewmodel/stand_meter_model.dart';
 import 'core/viewmodel/tegangan_model.dart';
+import 'core/viewmodel/tindak_lanjut_model.dart';
 GetIt locator = GetIt.instance;
 void setupLocator() {
  locator.registerLazySingleton(() => Api());
@@ -62,4 +64,6 @@ void setupLocator() {
  locator.registerFactory(()=>HistoryModel());
  locator.registerFactory(()=>CariMemberModel());
  locator.registerFactory(()=>UbahPasswordModel());
+ locator.registerFactory(()=>HasilPemeriksaanModel());
+ locator.registerFactory(()=>TindakLanjutModel());
 }

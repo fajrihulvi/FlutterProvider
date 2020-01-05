@@ -30,7 +30,7 @@ class PemasanganKeduaModel extends BaseModel{
   )async{
     setState(ViewState.Busy);
     result = await _hasilPemeriksaanApi.insertHasilPemeriksaan(token, 
-      beritaAcara,hasilPemeriksaanID,hasilPemeriksaanCheck
+      beritaAcara.toString(),hasilPemeriksaanID,hasilPemeriksaanCheck
     );
     if(result['success']==false){
       return result;
