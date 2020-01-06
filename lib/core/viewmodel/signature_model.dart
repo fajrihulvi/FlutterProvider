@@ -11,13 +11,13 @@ class SignatureModel extends BaseModel{
   TindakLanjutApi _tindakLanjutApi = locator<TindakLanjutApi>();
   HasilPemeriksaanApi _hasilPemeriksaanApi = locator<HasilPemeriksaanApi>();
   var result = new Map<String,dynamic>();
-  Future<Map<String,dynamic>> updateSignature(String token, String beritaAcara ,Uint8List ttdPetugas,Uint8List ttdPelanggan )async{
+  Future<Map<String,dynamic>> updateSignature(String token ,Uint8List ttdPetugas,Uint8List ttdPelanggan,List tindak_lanjut,List hasil_pemeriksaan,int pelangganID,int woID )async{
     setState(ViewState.Busy);
-    result = await _tindakLanjutApi.updateSignature(token, beritaAcara, ttdPetugas, ttdPelanggan);
+    result = await _tindakLanjutApi.updateSignature(token, ttdPetugas, ttdPelanggan,tindak_lanjut,pelangganID,woID);
     if(result['success']==false){
       return result;
     }
-    result = await _hasilPemeriksaanApi.updateSignature(token, beritaAcara, ttdPetugas, ttdPelanggan);
+    result = await _hasilPemeriksaanApi.updateSignature(token, ttdPetugas, ttdPelanggan,hasil_pemeriksaan,pelangganID,woID);
     if(result['success']==false){
       return result;
     }

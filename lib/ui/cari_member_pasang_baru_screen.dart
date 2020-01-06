@@ -1,5 +1,6 @@
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/cari_member_model.dart';
 import 'package:amr_apps/ui/base_view.dart';
@@ -92,13 +93,13 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
         Container(
           child:SingleChildScrollView(
             child: Column(
-              children:this.getUserBar(model.beritaAcara),
+              children:this.getUserBar(model.pelanggan),
             ),
           ),
         );
       });
   }
-  List<Widget> getUserBar(List<Berita_Acara> beritaAcara){
+  List<Widget> getUserBar(List<Pelanggan> beritaAcara){
        print(beritaAcara);
         var items = new List<Widget>();
         if(beritaAcara == null){
@@ -107,9 +108,7 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
         }
         else{
           for(var ba in beritaAcara){
-            if(ba.ttdPetugas == 0 || ba.ttdPelanggan == 0){
               items.add(this.getSingleUserBar(ba));
-            }
           }
           if(items.length==0){
             items.add(Center(child: Text("tidak ada data member")));
@@ -117,7 +116,7 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
         }
         return items;
   }
-  Widget getSingleUserBar(Berita_Acara beritaAcara){
+  Widget getSingleUserBar(Pelanggan beritaAcara){
     return InkWell(
               onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> MapScreen(
                 beritaAcara: beritaAcara,
@@ -138,7 +137,7 @@ class _CariMemberPasangBaruScreenState extends State<CariMemberPasangBaruScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             AutoSizeText(beritaAcara.namaPelanggan),
-                            AutoSizeText('ID Pel : '+beritaAcara.noPelanggan),
+                            AutoSizeText('ID Pel : '+beritaAcara.idPel),
                           ],
                         ),
                         children: <Widget>[

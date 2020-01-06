@@ -1,37 +1,27 @@
 import 'package:amr_apps/core/enum/viewstate.dart';
-import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
-import 'package:amr_apps/core/model/TindakLanjut.dart';
-import 'package:amr_apps/core/service/HasilPemeriksaanApi.dart';
-import 'package:amr_apps/core/service/TindakLanjutApi.dart';
+import 'package:amr_apps/core/service/ArusApi.dart';
+import 'package:amr_apps/core/service/StandMeterApi.dart';
+import 'package:amr_apps/core/service/TeganganApi.dart';
 import 'package:amr_apps/core/viewmodel/base_model.dart';
 
 import '../../locator.dart';
 
 class PemeriksaanKeduaModel extends BaseModel{
-  HasilPemeriksaanApi _hasilPemeriksaanApi = locator<HasilPemeriksaanApi>();
-  List<HasilPemeriksaan> hasilPemeriksaan;
-  TindakLanjutApi _tindakLanjutApi = locator<TindakLanjutApi>();
-  List<TindakLanjut> tindakLanjut;
-  var result = new Map<String,dynamic>();
-  Future getPemeliharaan(String token,String beritaAcaraID)async{
+  ArusApi _api = locator<ArusApi>();
+  TeganganApi _apiTegangan = locator<TeganganApi>();
+  StandMeterApi _apiStandMeter = locator<StandMeterApi>();
+  var result = Map <String,dynamic>();
+  Future<Map<String,dynamic>> insertAll(String token, Map<String,dynamic>tegangan,Map<String,dynamic>arus,Map<String,dynamic>standmeter)async{
     setState(ViewState.Busy);
-    hasilPemeriksaan = await _hasilPemeriksaanApi.getHasilPemeriksaan(token, "Hasil Pemeliharaan",beritaAcaraID);
-    tindakLanjut = await _tindakLanjutApi.getTindakLanjut(token, "Tindak Lanjut Pemeliharaan",beritaAcaraID);
-    setState(ViewState.Idle);
-  }
-  Future<Map<String,dynamic>> insert(String token, int beritaAcara,
-  List hasilPemeriksaanID,List hasilPemeriksaanCheck,
-  List tindakLanjutID,List tindakLanjutCheck,
-  List modem_id, List meter_id, List sim_card_id
-  )async{
-    setState(ViewState.Busy);
-    result = await _hasilPemeriksaanApi.insertHasilPemeriksaan(token, 
-      beritaAcara.toString(),hasilPemeriksaanID,hasilPemeriksaanCheck
-    );
+    result = await _api.insertArus(token, arus);
     if(result['success']==false){
       return result;
     }
-    result = await _tindakLanjutApi.insertHasilPemeriksaan(token, beritaAcara,tindakLanjutID,tindakLanjutCheck,modem_id,meter_id,sim_card_id);
+    result = await _apiTegangan.insertTegangan(token, tegangan);
+    if(result['success']==false){
+      return result;
+    }
+    result = await _apiStandMeter.insertStandMeter(token, standmeter);
     if(result['success']==false){
       return result;
     }

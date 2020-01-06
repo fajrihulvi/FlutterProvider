@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/arus_model.dart';
 import 'package:amr_apps/core/viewmodel/meter_model.dart';
@@ -27,12 +28,13 @@ class PemeriksaanPelangganPertamaScreen extends StatefulWidget {
   final int pelangganID;
   final Berita_Acara beritaAcara;
   final bool enableForm;
+  final Pelanggan pelanggan;
 
   const PemeriksaanPelangganPertamaScreen({
     this.pemeriksaanID,
     this.pelangganID,
     this.beritaAcara,
-    this.enableForm=true});
+    this.enableForm=true,this.pelanggan});
   
   @override
   _PemeriksaanPelangganPertamaScreenState createState() => _PemeriksaanPelangganPertamaScreenState();
@@ -152,60 +154,6 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                     ),
                   )
                 ),
-                SizedBox(height: 20,),
-                Text('Stand Meter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                BaseView<StandMeterModel>(
-                  onModelReady: (modelStandMeter)=>modelStandMeter.getStandMeterByBA(Provider.of<User>(context).token, this.widget.pemeriksaanID.toString()),
-                  builder: (context,modelStandMeter,child)=> modelStandMeter.state == ViewState.Busy ?
-                  Center(child: CircularProgressIndicator()) : 
-                   Form(
-                    key: this.formStandMeter,
-                    child: FormStandMeter(
-                      enableEdit: this.widget.enableForm,
-                      lwbp: this.lwbp,
-                      wbp: this.wbp,
-                      kvarh: this.kvarh,
-                      pemeriksaanID: modelStandMeter.standMeter.baID,
-                      standMeter: modelStandMeter.standMeter,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Text('Tegangan (V)',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                BaseView<TeganganModel>(
-                  onModelReady: (modelTegangan)=>modelTegangan.getTeganganByBA(Provider.of<User>(context).token, this.widget.pemeriksaanID.toString()),
-                  builder: (context,modelTegangan,child)=> modelTegangan.state == ViewState.Busy ?
-                  Center(child: CircularProgressIndicator()) : 
-                   Form(
-                    key: this.formTegangan,
-                    child: FormTegangan(
-                      enableEdit: this.widget.enableForm,
-                      vr: this.vr,
-                      vs: this.vs,
-                      vt: this.vt,
-                      pemeriksaanID: modelTegangan.tegangan.baID,
-                      tegangan: modelTegangan.tegangan,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Text('Arus (A)',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                BaseView<ArusModel>(
-                  onModelReady: (modelArus)=>modelArus.getArusByBA(Provider.of<User>(context).token, this.widget.pemeriksaanID.toString()),
-                  builder: (context,modelArus,child)=> modelArus.state == ViewState.Busy ?
-                  Center(child: CircularProgressIndicator()) : 
-                   Form(
-                    key: this.formArus,
-                    child: FormArus(
-                      enableEdit: this.widget.enableForm,
-                      lr: this.lr,
-                      ls: this.ls,
-                      lt: this.lt,
-                      pemeriksaanID: modelArus.arus.baID,
-                      arus: modelArus.arus,
-                    ),
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -213,25 +161,9 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                       color: primaryColor2,
                         onPressed: () async{
                           if(this.widget.enableForm){
-                            if(this.formTegangan.currentState.validate()&&this.formArus.currentState.validate()
-                          &&this.formStandMeter.currentState.validate()&&this.formModem.currentState.validate()
+                            if(this.formModem.currentState.validate()
                           &&this.formMeter.currentState.validate()){
-                            Map<String,dynamic> result = await model.insertAll(Provider.of<User>(context).token, {
-                              "nilai_vs" : this.vs.text,
-                              "nilai_vr" : this.vr.text,
-                              "nilai_vt" : this.vt.text,
-                              "hasil_pemeriksaan_id" : this.widget.pemeriksaanID.toString()
-                            },{
-                              "nilai_ls" : this.ls.text,
-                              "nilai_lr" : this.lr.text,
-                              "nilai_lt" : this.lt.text,
-                              "hasil_pemeriksaan_id" : this.widget.pemeriksaanID.toString()
-                            },{
-                              "nilai_lwbp" : this.lwbp.text,
-                              "nilai_wbp" : this.wbp.text,
-                              "nilai_kvarh" : this.kvarh.text,
-                              "hasil_pemeriksaan_id" : this.widget.pemeriksaanID.toString()
-                            },
+                            Map<String,dynamic> result = await model.insertAll(Provider.of<User>(context).token,
                             {
                               "no_imei" : this.noImei.text,
                               "tipe" : this.tipeModem.text,
@@ -264,7 +196,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                                     seconds: 3,
                                   ),(){
                                     Navigator.pushNamed(
-                                context, '/detail_pemeriksaan/second',arguments:{ "berita_acara": this.widget.beritaAcara, "result" : result});
+                                context, '/hasil_pemeriksaan', arguments: this.widget.pelanggan);
                                   }
                                 );
                             }
@@ -278,7 +210,7 @@ class _PemeriksaanPelangganPertamaScreenState extends State<PemeriksaanPelanggan
                           }
                           else{
                               Navigator.pushNamed(
-                              context, '/view/detail_pemeriksaan/second',arguments:{ "berita_acara": this.widget.beritaAcara, "result" : null,"enableForm":this.widget.enableForm});
+                              context, '/view/hasil_pemeriksaan',arguments:{ "pelanggan": this.widget.pelanggan,"enableForm":this.widget.enableForm});
                           }
                           
                         },

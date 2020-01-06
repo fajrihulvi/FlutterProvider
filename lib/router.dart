@@ -47,6 +47,12 @@ class Router{
         return MaterialPageRoute(builder: (_)=>DetailWoPemasanganScreen(
           workOrder: wo,
         ));
+      case '/detail_pemeriksaan/first':
+        var  pel= settings.arguments as Pelanggan;
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganPertamaScreen(
+          pelangganID: pel.id,
+          pelanggan: pel,
+        ));
       case '/hasil_pemeriksaan':
         var pel = settings.arguments as Pelanggan;
         return MaterialPageRoute(builder: (_)=>HasilPemeriksaanScreen(
@@ -96,31 +102,52 @@ class Router{
       case '/detail_pemeriksaan/second':
         var data = settings.arguments as Map<String,dynamic>;
         var ba = data['berita_acara'] as Berita_Acara;
-        var result = data['result'];
-        print("Result : "+result.toString());
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(baID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba,result: result));
+        var hasil_pemeriksaan = data['hasil_pemeriksaan'] as List;
+        var tindak_lanjut = data['tindak_lanjut'] as List;
+        var pelanggan = data['pelanggan'] as Pelanggan;
+        print("Result : "+data.toString());
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(
+          pelangganID: pelanggan.id,
+          tindak_lanjut: tindak_lanjut,
+          pelanggan: pelanggan,
+          hasil_pemeriksaan: hasil_pemeriksaan,
+          beritaAcara: ba,
+        ));
       case '/view/detail_pemeriksaan/second':
         var data = settings.arguments as Map<String,dynamic>;
         var ba = data['berita_acara'] as Berita_Acara;
         var enableForm = data['enableForm'];
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(baID: ba.id, pelangganID: ba.pelangganID,beritaAcara: ba,enableForm:enableForm));
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKeduaScreen(pelangganID: ba.pelangganID,beritaAcara: ba,enableForm:enableForm));
       case '/detail_pemeriksaan/third':
-        var ba = settings.arguments as Berita_Acara;
+        var data = settings.arguments as Map<String,dynamic>;
+        var ba = data['berita_acara'] as Berita_Acara;
+        var hasil_pemeriksaan = data['hasil_pemeriksaan'] as List;
+        var tindak_lanjut = data['tindak_lanjut'] as List;
+        var pelanggan = data['pelanggan'] as Pelanggan;
         print(ba);
-        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKetigaScreen(beritaAcara: ba));
+        return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKetigaScreen(beritaAcara: ba,
+        pelanggan: pelanggan, hasil_pemeriksaan: hasil_pemeriksaan,tindak_lanjut: tindak_lanjut, pelangganID: pelanggan.id,));
       case '/view/detail_pemeriksaan/third':
         var ba = settings.arguments as Berita_Acara;
         print(ba);
         return MaterialPageRoute(builder: (_)=>PemeriksaanPelangganKetigaScreen(beritaAcara: ba,enableForm: false));
       case '/signaturePelanggan':
-        var ba = settings.arguments as Berita_Acara;
-        return MaterialPageRoute(builder: (_)=>SignatureView(beritaacara: ba));
+        var data = settings.arguments as Map<String,dynamic>;
+        var ba = data['berita_acara'] as Berita_Acara;
+        var hasil_pemeriksaan = data['hasil_pemeriksaan'] as List;
+        var tindak_lanjut = data['tindak_lanjut'] as List;
+        var pelanggan = data['pelanggan'] as Pelanggan;
+        return MaterialPageRoute(builder: (_)=>SignatureView(beritaacara: ba,
+        pelanggan: pelanggan, hasil_pemeriksaan: hasil_pemeriksaan,tindak_lanjut: tindak_lanjut));
       case '/signaturePetugas':
         var data = settings.arguments as Map<String,dynamic>;
         var ba = data['berita_acara'] as Berita_Acara;
+        var hasil_pemeriksaan = data['hasil_pemeriksaan'] as List;
+        var tindak_lanjut = data['tindak_lanjut'] as List;
+        var pelanggan = data['pelanggan'] as Pelanggan;
         var signaturePelanggan = data['signature_pelanggan'] as Uint8List;
         print("Signature Pelanggan :"+ signaturePelanggan.toString());
-        return MaterialPageRoute(builder: (_)=>SignaturePetugasScreen(beritaacara: ba,signaturePelanggan: signaturePelanggan));
+        return MaterialPageRoute(builder: (_)=>SignaturePetugasScreen(beritaacara: ba,signaturePelanggan: signaturePelanggan,pelanggan: pelanggan, hasil_pemeriksaan: hasil_pemeriksaan,tindak_lanjut: tindak_lanjut));
       case '/cari_pasang_baru':
         return MaterialPageRoute(builder: (_)=>CariMemberPasangBaruScreen());
       case '/cari_pemeriksaan':

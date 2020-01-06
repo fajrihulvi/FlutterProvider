@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
+import 'package:amr_apps/core/model/Pemeliharaan.dart';
 import 'package:amr_apps/core/service/ApiSetting.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 
 class HasilPemeriksaanApi {
   static const host = "http://192.168.43.85";
@@ -64,19 +63,21 @@ class HasilPemeriksaanApi {
     map = responseBody;
     return map;
   }
-   Future<Map<String,dynamic>> updateSignature(String token,String beritaAcara, Uint8List ttdPetugas,Uint8List ttdPelanggan) async{
+   Future<Map<String,dynamic>> updateSignature(String token, Uint8List ttdPetugas,Uint8List ttdPelanggan,List hasil_pemeriksaan,int pelangganID,int woID) async{
     print("Update tanda tangan tindak lanjut....");
     print("Token : $token");
     var map = new Map<String,dynamic>();
     var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/hasil_pemeriksaan/signature");
     print("URL : $url");
     var body = new Map<String,dynamic>();
-    body['berita_acara_id'] = beritaAcara;
+    body['pelanggan_id'] = pelangganID.toString();
+    body['wo_id'] = woID.toString();
     body['ttd_petugas'] = base64Encode(ttdPetugas);
     body['ttd_pelanggan'] = base64Encode(ttdPelanggan);
+    body['id'] = json.encode(hasil_pemeriksaan);
     print("Body : "+body.toString());
     var response = await http.post(url,
-      headers: {"Authorization":token},
+      headers: {"Authorization":token,"Accept":"application/json"},
       body: body,
     );
     final statusCode = response.statusCode;
@@ -87,5 +88,30 @@ class HasilPemeriksaanApi {
     var responseBody =  json.decode(response.body);
     map = responseBody;
     return map;
+  }
+  Future<Pemeliharaan> getPemeliharaan(String token,String pemeliharaanIDw) async{
+    print("Get Pemeliharaan By ID....");
+    print("Token : $token");
+    Pemeliharaan pemeliharaan;
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/pemeliharaan?"+"pemeliharaan_id="+pemeliharaanIDw.toString()+"&limit=1");
+    print("URL : $url");
+    var response = await http.get(url,
+      headers: {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      }
+    );
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+      return null;
+    }
+    var responseBody =  json.decode(response.body);
+    if(responseBody['pemeliharaan'] == null){
+      return null;
+    }
+    pemeliharaan = new Pemeliharaan.fromMap(responseBody['pemeliharaan']);
+    return pemeliharaan;
   }
 }

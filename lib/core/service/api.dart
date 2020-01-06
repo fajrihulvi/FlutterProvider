@@ -157,10 +157,10 @@ class Api {
     }
     return pelanggan;
   }
-  Future<List<Berita_Acara>> cariMember(String token,String jenisPemeliharaan,String query) async{
+  Future<List<Pelanggan>> cariMember(String token,String jenisPemeliharaan,String query) async{
     print("Get Pelanggan By WO");
     print("Token : $token");
-    var pelanggan = List<Berita_Acara>();
+    var pelanggan = List<Pelanggan>();
     var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/berita_acara/cari_member?"+"jenis_pemeliharaan="+jenisPemeliharaan.toString()+"&query="+query);
     print("URL : $url");
     var response = await http.get(url,
@@ -183,7 +183,7 @@ class Api {
     var parsed = map['data'] as List<dynamic>;
     for (var beritaAcara in parsed) {
       print("WO $beritaAcara");
-      pelanggan.add(Berita_Acara.fromWorkOrder(beritaAcara));
+      pelanggan.add(Pelanggan.fromMap(beritaAcara));
     }
     return pelanggan;
   }
@@ -206,11 +206,11 @@ class Api {
     }
     return json.decode(response.body);
   }
-  Future<Pemeliharaan> getPemeliharaan(String token,String pemeliharaanID) async{
+  Future<Pemeliharaan> getPemeliharaan(String token,String pemeliharaanIDw) async{
     print("Get Pemeliharaan By ID....");
     print("Token : $token");
     Pemeliharaan pemeliharaan;
-    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/pemeliharaan?"+"pemeliharaan_id="+pemeliharaanID.toString()+"&limit=1");
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/pemeliharaan?"+"pemeliharaan_id="+pemeliharaanIDw.toString()+"&limit=1");
     print("URL : $url");
     var response = await http.get(url,
       headers: {

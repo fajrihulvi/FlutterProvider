@@ -5,7 +5,6 @@ import 'package:amr_apps/core/model/Berita_Acara.dart';
 import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
 import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
-import 'package:amr_apps/core/model/WorkOrder.dart';
 import 'package:amr_apps/core/viewmodel/hasil_pemeriksaan_model.dart';
 import 'package:amr_apps/ui/base_view.dart';
 import 'package:amr_apps/ui/shared/color.dart';
@@ -76,7 +75,7 @@ class _HasilPemeriksaanScreenState extends State<HasilPemeriksaanScreen> {
                               style: TextStyle(color: colorWhite, fontSize: 14),
                             ),
                             Text(
-                              model.pemeliharaan.jenisPemeliharaan,
+                              model.pemeliharaan == null ? "": model.pemeliharaan.pemeliharaan,
                               style: TextStyle(color: colorWhite, fontSize: 14),
                             ),
                           ],
@@ -154,7 +153,6 @@ class _HasilPemeriksaanScreenState extends State<HasilPemeriksaanScreen> {
                       }
                     },
                     child: Text('Selanjutnya'),
-
                   )
                 ],
               )

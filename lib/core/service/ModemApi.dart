@@ -34,6 +34,34 @@ class ModemApi {
     modem = new Modem.fromMap(responseBody['modem']);
     return modem;
   }
+  Future<List<Modem>> getModemByNoIMEI(String token,String noImei) async{
+    print("Get Modem By Pelanggan....");
+    print("Token : $token");
+    List<Modem> modem= new List();
+    var url = Uri.parse(apiSetting.host+apiSetting.postfix+"/modem/cari?"+"no_imei="+noImei.toString()+"&limit=5");
+    print("URL : $url");
+    var response = await http.get(url,
+      headers: {
+        "Authorization" : token,
+        "Content-Type" : "application/json"
+      }
+    );
+    final statusCode = response.statusCode;
+    print('body: [${response.body}]');
+    if(statusCode < 200 || statusCode >= 400){
+      print("An Error Occured : [Status Code : $statusCode]");
+      return modem;
+    }
+    var responseBody =  json.decode(response.body);
+    if(responseBody['modem']==null){
+      return modem;
+    }
+    var map = responseBody['modem'];
+    for(var mdm in map){
+      modem.add(Modem.fromMap(mdm));
+    }
+    return modem;
+  }
   Future<Map<String,dynamic>> insertModem(String token,Map<String,dynamic> data) async{
     print("Insert data modem....");
     print("Token : $token");

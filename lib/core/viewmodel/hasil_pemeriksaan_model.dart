@@ -1,21 +1,19 @@
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/HasilPemeriksaan.dart';
+import 'package:amr_apps/core/model/Pemeliharaan.dart';
 import 'package:amr_apps/core/service/HasilPemeriksaanApi.dart';
 import 'package:amr_apps/core/viewmodel/base_model.dart';
-import 'package:amr_apps/core/model/Pemeliharaan.dart';
-import 'package:amr_apps/core/service/Api.dart';
 
 import '../../locator.dart';
 class HasilPemeriksaanModel extends BaseModel{
   HasilPemeriksaanApi _hasilPemeriksaanApi = locator<HasilPemeriksaanApi>();
   List<HasilPemeriksaan> hasilPemeriksaan;
   Pemeliharaan pemeliharaan;
-  Api _api = locator<Api>();
   var result = new Map<String,dynamic>();
   Future getPemeliharaan(String token,String beritaAcaraID,String pemeliharaanID)async{
     setState(ViewState.Busy);
     hasilPemeriksaan = await _hasilPemeriksaanApi.getHasilPemeriksaan(token, "Pemeriksaan",beritaAcaraID);
-    pemeliharaan = await _api.getPemeliharaan(token,pemeliharaanID);
+    pemeliharaan = await _hasilPemeriksaanApi.getPemeliharaan(token,pemeliharaanID);
     setState(ViewState.Idle);
   }
   Future<Map<String,dynamic>> insertHasilPemeriksaan(String token, String beritaAcara,

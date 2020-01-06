@@ -1,4 +1,5 @@
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/ui/widget/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapScreen extends StatefulWidget {
  final LatLng pelangganPosition;
   final LatLng myPosition;
-  final Berita_Acara beritaAcara;
+  final Pelanggan beritaAcara;
   const MapScreen({this.pelangganPosition,this.myPosition,this.beritaAcara});
   @override
   _MapScreenState createState() => _MapScreenState();

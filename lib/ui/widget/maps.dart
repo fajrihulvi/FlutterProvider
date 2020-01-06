@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapsScreen extends StatefulWidget {
   final LatLng pelangganPosition;
   final LatLng myPosition;
-  final Berita_Acara beritaAcara;
+  final Pelanggan beritaAcara;
 
   const MapsScreen({this.pelangganPosition,this.myPosition,this.beritaAcara});
   @override
@@ -78,7 +79,7 @@ class _MapsScreenState extends State<MapsScreen> {
     _refreshCameraPosition();
     _geocodeCurrentPosition();
   }
-  void _updatePelangganPosition(LatLng position,Berita_Acara beritaAcara) async{
+  void _updatePelangganPosition(LatLng position,Pelanggan beritaAcara) async{
     var markerId = MarkerId("Posisi "+beritaAcara.namaPelanggan);
     setState(() {
       _markers.add(Marker(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/pemeriksaan_ketiga_model.dart';
 import 'package:amr_apps/ui/base_view.dart';
@@ -15,7 +16,12 @@ import 'package:provider/provider.dart';
 class PemeriksaanPelangganKetigaScreen extends StatefulWidget {
   final Berita_Acara beritaAcara;
   final bool enableForm;
-  const PemeriksaanPelangganKetigaScreen({Key key, this.beritaAcara,this.enableForm=true}) : super(key: key);
+  final int pemeriksaanID;
+  final int pelangganID;
+  final List hasil_pemeriksaan;
+  final List tindak_lanjut;
+  final Pelanggan pelanggan;
+  const PemeriksaanPelangganKetigaScreen({Key key, this.beritaAcara,this.enableForm=true, this.pemeriksaanID, this.pelangganID, this.hasil_pemeriksaan, this.tindak_lanjut, this.pelanggan}) : super(key: key);
   
   @override
   _PemeriksaanPelangganKetigaScreenState createState() => _PemeriksaanPelangganKetigaScreenState();
@@ -35,7 +41,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
   @override
   Widget build(BuildContext context) {
     return BaseView<PemeriksaanKetigaModel>(
-      onModelReady:(model)=>model.getKodeSegel(Provider.of<User>(context).token, this.widget.beritaAcara.id.toString()),
+      onModelReady:(model)=>model.getKodeSegel(Provider.of<User>(context).token, this.widget.pemeriksaanID.toString()),
       builder:(context,model,child)=>SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
@@ -106,7 +112,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                         if(this.widget.enableForm){
                           if(this.formKodesegel.currentState.validate()){
                             var map = Map<String,dynamic>();
-                            map['hasil_pemeriksaan_id'] = this.widget.beritaAcara.id.toString();
+                            map['hasil_pemeriksaan_id'] = "";
                             map['boxapp_sebelum']= this.boxAppSblm.text;
                             map['boxapp_sesudah']= this.boxAppSsdh.text;
                             map['kwh_sebelum']= this.kwhSblm.text;
@@ -130,7 +136,7 @@ class _PemeriksaanPelangganKetigaScreenState extends State<PemeriksaanPelangganK
                                             seconds: 3,
                                           ),(){
                                             Navigator.pushNamed(
-                                        context, '/signaturePelanggan',arguments: widget.beritaAcara);
+                                        context, '/signaturePelanggan',arguments:{ "berita_acara": this.widget.beritaAcara, "result" : null,"enableForm":this.widget.enableForm,"pelanggan": widget.pelanggan,"hasil_pemeriksaan":widget.hasil_pemeriksaan , "tindak_lanjut":widget.tindak_lanjut});
                                           }
                                         );
                               }

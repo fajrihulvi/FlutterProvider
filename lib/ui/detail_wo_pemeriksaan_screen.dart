@@ -98,7 +98,7 @@ class _DetailWoPemeriksaanScreenState extends State<DetailWoPemeriksaanScreen> {
         items.add(new PemeriksaanCard(
             pelanggan: pel,
             onTap: (){
-              Navigator.pushNamed(context, '/hasil_pemeriksaan',arguments: pel);
+              Navigator.pushNamed(context, '/detail_pemeriksaan/first',arguments: pel);
             }
           )
         );

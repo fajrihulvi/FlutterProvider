@@ -35,7 +35,7 @@ class PemasanganKeduaModel extends BaseModel{
     if(result['success']==false){
       return result;
     }
-    result = await _tindakLanjutApi.insertHasilPemeriksaan(token, beritaAcara,tindakLanjutID,tindakLanjutCheck,modem_id,meter_id,sim_card_id);
+    result = await _tindakLanjutApi.insertHasilPemeriksaan(token,1, beritaAcara,tindakLanjutID,tindakLanjutCheck,modem_id,meter_id,sim_card_id);
     if(result['success']==false){
       return result;
     }

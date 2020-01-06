@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/signature_model.dart';
 import 'package:amr_apps/ui/base_view.dart';
@@ -16,8 +17,12 @@ import 'package:signature/signature.dart';
 class SignaturePetugasScreen extends StatefulWidget {
   final Uint8List signaturePelanggan;
   final Berita_Acara beritaacara;
+  final List hasil_pemeriksaan;
+  final List tindak_lanjut;
+  final Pelanggan pelanggan;
+  final bool enableForm;
 
-  const SignaturePetugasScreen({this.signaturePelanggan, this.beritaacara});
+  const SignaturePetugasScreen({this.signaturePelanggan, this.beritaacara, this.hasil_pemeriksaan, this.tindak_lanjut, this.pelanggan, this.enableForm=true});
   @override
   _SignaturePetugasScreenState createState() => _SignaturePetugasScreenState();
 }
@@ -133,13 +138,11 @@ color: cBgColor,
                 color: primaryColor2,
                 child: Text('Simpan'),
                 onPressed: ()async{
-                  print("Berita acara :"+this.widget.beritaacara.id.toString());
                   var ttdPetugas = await _signatureCanvas.exportBytes();
                   var ttdPelanggan = this.widget.signaturePelanggan;
                   var result = await model.updateSignature(
                   Provider.of<User>(context).token, 
-                  this.widget.beritaacara.id.toString(), 
-                  ttdPetugas,ttdPelanggan
+                  ttdPetugas,ttdPelanggan,widget.tindak_lanjut,widget.hasil_pemeriksaan,widget.pelanggan.id,widget.pelanggan.woID
                   );
                   if(result['success']==true){
                     print(result['msg']);

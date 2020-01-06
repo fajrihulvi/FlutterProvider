@@ -1,4 +1,5 @@
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Pelanggan.dart';
 import 'package:amr_apps/ui/shared/color.dart';
 import 'package:amr_apps/ui/shared/size.dart';
 import 'package:amr_apps/ui/signature_pemeriksaan_petugas_view.dart';
@@ -10,8 +11,12 @@ import 'package:signature/signature.dart';
 class SignatureView extends StatefulWidget {
   
   final Berita_Acara beritaacara;
+  final List hasil_pemeriksaan;
+  final List tindak_lanjut;
+  final Pelanggan pelanggan;
+  final bool enableForm;
 
-  const SignatureView({this.beritaacara});
+  const SignatureView({this.beritaacara, this.hasil_pemeriksaan, this.tindak_lanjut, this.pelanggan, this.enableForm=true});
   
   @override
   _SignatureViewState createState() => _SignatureViewState();
@@ -131,7 +136,7 @@ class _SignatureViewState extends State<SignatureView> {
                   var signaturePelanggan = await _signatureCanvas.exportBytes();
                   print("Signature Pelanggan :"+signaturePelanggan.toString());
                   if(signaturePelanggan != null){
-                    Navigator.pushNamed(context, '/signaturePetugas', arguments: {"berita_acara" : this.widget.beritaacara,"signature_pelanggan":signaturePelanggan});
+                    Navigator.pushNamed(context, '/signaturePetugas', arguments: {"berita_acara" : this.widget.beritaacara,"signature_pelanggan":signaturePelanggan,"enableForm":this.widget.enableForm,"pelanggan": widget.pelanggan,"hasil_pemeriksaan":widget.hasil_pemeriksaan , "tindak_lanjut":widget.tindak_lanjut});
                     }
                 }),
           )

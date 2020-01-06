@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:amr_apps/core/enum/viewstate.dart';
 import 'package:amr_apps/core/model/Berita_Acara.dart';
+import 'package:amr_apps/core/model/Modem.dart';
+import 'package:amr_apps/core/model/SimCard.dart';
 import 'package:amr_apps/core/model/TindakLanjut.dart';
 import 'package:amr_apps/core/model/User.dart';
 import 'package:amr_apps/core/viewmodel/tindak_lanjut_model.dart';
@@ -32,7 +34,22 @@ class TindakLanjutScreen extends StatefulWidget {
 
 class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  TextEditingController simCard = new TextEditingController();
+  TextEditingController modem = new TextEditingController();
+  List<Modem> listModem ;
+  List<SimCard> listsimCard ;
+  bool simCardVisible =false;
+  bool modemVisible=false;
+  int modemId;
+  int simCardId;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState(); 
+    listModem = new List<Modem>();
+  listsimCard =  new List<SimCard>();
+  }
   @override
   Widget build(BuildContext context) {
     return BaseView<TindakLanjutModel>(
@@ -74,7 +91,7 @@ class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
                               style: TextStyle(color: colorWhite, fontSize: 14),
                             ),
                             Text(
-                              model.pemeliharaan.jenisPemeliharaan,
+                              model.pemeliharaan == null ? "" : model.pemeliharaan.pemeliharaan,
                               style: TextStyle(color: colorWhite, fontSize: 14),
                             ),
                           ],
@@ -101,7 +118,7 @@ class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
               Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: this.getTindakLanjut(model.tindakLanjut)
+                  children: this.getTindakLanjut(model.tindakLanjut,model)
                 ),
               ),
               Row(
@@ -119,11 +136,21 @@ class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
                         for(var a in model.tindakLanjut){
                           tindakLanjutId.add(a.id);
                           tindakLanjutCheck.add(a.check);
-                          modem_id.add(int.parse(this.widget.pelanggan.modemID.toString()));
+                          if(this.simCardId==null){
+                            sim_card_id.add(int.parse(this.widget.pelanggan.simCardID.toString()));
+                          }
+                          else{
+                            sim_card_id.add(this.simCardId);
+                          }
+                          if(this.modemId==null){
+                            modem_id.add(int.parse(this.widget.pelanggan.modemID.toString()));
+                          }
+                          else{
+                            modem_id.add(this.modemId);
+                          }
                           meter_id.add(int.parse(this.widget.pelanggan.meterID.toString()));
-                          sim_card_id.add(int.parse(this.widget.pelanggan.simCardID.toString()));
                         }
-                        var result = await model.insertTindakLanjut(Provider.of<User>(context).token ,this.widget.baID,
+                        var result = await model.insertTindakLanjut(Provider.of<User>(context).token,this.widget.pelanggan.id ,this.widget.baID,
                         tindakLanjutId,tindakLanjutCheck,
                         modem_id,meter_id,sim_card_id
                         );
@@ -142,7 +169,10 @@ class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
                                       seconds: 3,
                                     ),(){
                                       Navigator.pushNamed(
-                                  context, '/detail_pemeriksaan/third',arguments: widget.beritaAcara);
+                                  context, '/detail_pemeriksaan/second',arguments: 
+                                  {"hasil_pemeriksaan":widget.hasil_pemeriksaan,
+                                  "pelanggan":widget.pelanggan,
+                                  "tindak_lanjut":result['tindak_lanjut']});
                                     }
                                   );
                         }
@@ -155,7 +185,7 @@ class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
                       }
                       else{
                         Navigator.pushNamed(
-                                  context, '/view/detail_pemeriksaan/third',arguments: widget.beritaAcara);
+                                  context,  '/detail_pemeriksaan/second',arguments: widget.beritaAcara);
                       }
                     },
                     child: Text('Selanjutnya'),
@@ -170,29 +200,231 @@ class _TindakLanjutScreenState extends State<TindakLanjutScreen> {
     )
   );
   }
-  List<Widget> getTindakLanjut(List<TindakLanjut> tindakLanjut){
+  List<Widget> gantiModem(List<TindakLanjut> tindakLanjut,TindakLanjutModel tindakLanjutModel){
     var items = new List<Widget>();
-      for (var tl in tindakLanjut) {
-        items.add(new TindakLanjutTile(
-            tindakLanjut: tl,
-            isChecked: tl.check == null || tl.check == 0 ? false : true,
+    var gantiModem = tindakLanjut.where((value)=>value.pemeliharaan.startsWith("Ganti Modem"));
+    items.add(new TindakLanjutTile(
+            tindakLanjut: gantiModem.first,
+            isChecked: gantiModem.first.check == null || gantiModem.first.check == 0 ? false : true,
             onTap: (bool isCheck){
               if(this.widget.enableForm){
                     if(isCheck == true){
                     setState(() {
-                      tl.check = 1;
+                      gantiModem.first.check = 1;
                     });
                   }
                   else{
                     setState(() {
-                      tl.check = 0;
+                      gantiModem.first.check = 0;
                     });
                   }
                 }
-            }
-          )
-        );
+    }));
+    items.add(ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              SizedBox(width: 200,
+                              child: TextFormField(
+                                controller: this.modem,
+                                enabled: gantiModem.first.check == null || gantiModem.first.check == 0 ? false : true,
+                                onChanged: (val)async{
+                                  var resultModem=await tindakLanjutModel.cariModem(Provider.of<User>(context).token, val);
+                                  if(resultModem!=null){
+                                    setState(() {
+                                      this.modemVisible=true;
+                                    this.listModem = tindakLanjutModel.modem;
+                                    });}
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "No IMEI"
+                                ),
+                                validator: (val){
+                                  return val;
+                                }
+                              )),
+                            Visibility(
+                              visible:this.modemVisible,
+                              child: Container(
+                              width: 200,
+                              child:  Card(
+                                child: ListView.builder(
+                                  itemCount: listModem.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (ctx, index){
+                                    return InkWell(onTap: (){
+                                      setState(() {
+                                        this.modem.text=listModem[index].noIMEI;
+                                      this.modemVisible=false;
+                                      this.modemId =listModem[index].id;
+                                      });
+                                    }, child: Container(
+                                      width:200,
+                                      padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 2.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border(bottom: BorderSide(
+                                        width: 1
+                                      )),
+                                    ),
+                                    child: Text(listModem[index].noIMEI),),);
+                                  },
+                                )
+                              ),
+                            ),
+                            ),
+                            ],
+                          )
+                        ],
+                      ),
+                      trailing: Checkbox(
+                          value: gantiModem.first.check == null || gantiModem.first.check == 0 ? false : true, 
+                          onChanged: (bool isCheck){
+                          if(this.widget.enableForm){
+                                if(isCheck == true){
+                                setState(() {
+                                  gantiModem.last.check = 1;
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  gantiModem.last.check = 0;
+                                });
+                              }
+                            }
+                          }
+                      ),
+    ));
+    return items;
+  }
+  List<Widget> getTindakLanjut(List<TindakLanjut> tindakLanjut,TindakLanjutModel tindakLanjutModel){
+    var items = new List<Widget>();
+    var gantiModem = this.gantiModem(tindakLanjut,tindakLanjutModel);
+    var gantiSimCard = this.gantiSimCard(tindakLanjut,tindakLanjutModel);
+    items.addAll(gantiModem);
+    items.addAll(gantiSimCard);
+    for(var tl in tindakLanjut){
+      if(!tl.pemeliharaan.startsWith("Ganti No Sim Card") && !tl.pemeliharaan.startsWith("Ganti Modem")){
+          items.add(new TindakLanjutTile(
+              tindakLanjut: tl,
+              isChecked: tl.check == null || tl.check == 0 ? false : true,
+              onTap: (bool isCheck){
+                if(this.widget.enableForm){
+                      if(isCheck == true){
+                      setState(() {
+                        tl.check = 1;
+                      });
+                    }
+                    else{
+                      setState(() {
+                        tl.check = 0;
+                      });
+                    }
+                  }
+      }));
       }
+    }
+    return items;
+  }
+  List<Widget> gantiSimCard(List<TindakLanjut> tindakLanjut,TindakLanjutModel tindakLanjutModel){
+    var items = new List<Widget>();
+    var gantiModem = tindakLanjut.where((value)=>value.pemeliharaan.startsWith("Ganti No Sim Card"));
+    items.add(new TindakLanjutTile(
+            tindakLanjut: gantiModem.first,
+            isChecked: gantiModem.first.check == null || gantiModem.first.check == 0 ? false : true,
+            onTap: (bool isCheck){
+              if(this.widget.enableForm){
+                    if(isCheck == true){
+                    setState(() {
+                      gantiModem.first.check = 1;
+                    });
+                  }
+                  else{
+                    setState(() {
+                      gantiModem.first.check = 0;
+                    });
+                  }
+                }
+    }));
+    items.add(ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              SizedBox(width: 200,
+                              child: TextFormField(
+                                controller: this.simCard,
+                                enabled: gantiModem.first.check == null || gantiModem.first.check == 0 ? false : true,
+                                onChanged: (val)async{
+                                  var resultModem=await tindakLanjutModel.cariSimcard(Provider.of<User>(context).token, val);
+                                  if(resultModem!=null){
+                                    setState(() {
+                                      this.simCardVisible=true;
+                                      this.listsimCard = tindakLanjutModel.simcard;
+                                    });}
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "No Sim Card"
+                                ),
+                                validator: (val){
+                                  return val;
+                                }
+                              ),),
+                               Visibility(
+                              visible:this.simCardVisible,
+                              child: Container(
+                              width: 200,
+                              child:  Card(
+                                child: ListView.builder(
+                                  itemCount: listsimCard.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (ctx, index){
+                                    return InkWell(onTap: (){
+                                      setState(() {
+                                        this.simCard.text=listsimCard[index].noSIM;
+                                        this.simCardVisible=false;
+                                      this.simCardId =listsimCard[index].id;
+                                      });
+                                    }, child: Container(
+                                      width:200,
+                                      padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 2.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border(bottom: BorderSide(
+                                        width: 1
+                                      )),
+                                    ),
+                                    child: Text(listsimCard[index].noSIM),),);
+                                  },
+                                )
+                              ),
+                            ),
+                            ),
+                            ],
+                          )
+                        ],
+                      ),
+                      trailing: Checkbox(
+                          value: gantiModem.first.check == null || gantiModem.first.check == 0 ? false : true, 
+                          onChanged: (bool isCheck){
+                          if(this.widget.enableForm){
+                                if(isCheck == true){
+                                setState(() {
+                                  gantiModem.last.check = 1;
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  gantiModem.last.check = 0;
+                                });
+                              }
+                            }
+                          }
+                      ),
+    ));
     return items;
   }
 }
